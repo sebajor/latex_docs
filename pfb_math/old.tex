@@ -1,0 +1,783 @@
+
+\section{Ideal Balanced Mixer}\label{section-introduction}
+
+\begin{figure}[t]
+    \centering
+    \input{images/bm_ideal}
+    \caption{Balanced mixer architecture}
+    \label{fig:bm_ideal}
+\end{figure}
+
+
+The figure \ref{fig:bm_ideal} shows the typical balanced mixer setup. In our math we are going to use a 90° hybrid with the S matrix of the equation \ref{eq:s_hybrid}.
+
+\begin{equation}
+    \label{eq:s_hybrid}
+    S = \frac{-1}{\sqrt{2}}
+    \begin{pmatrix}
+        0 & j & 1 & 0 \\
+        j & 0 & 0 & 1 \\
+        1 & 0 & 0 & j \\
+        0 & 1 & j & 0 
+    \end{pmatrix}
+\end{equation}
+
+
+
+The voltage at the inputs of the hybrid are given \ref{eq:v_lo} where $\eta$ represent the noise of the local oscillator, and the equation \ref{eq:v_rf} is the input of the RF, where $\eta_{usb}=\omega_{lo}+\omega_{lsb}$ and $\eta_{lsb}=\omega_{lo}-\omega_{lsb}$ where $\omega_{usb}$ and $\omega_{lsb}$ will be our IF signals.
+
+\begin{equation}
+    \label{eq:v_lo}
+    V_{lo} = V_{lo}\cos(\omega_{lo}t)+\eta(t)\cos((\omega_{lo}+\delta)t)+\xi(t)\cos((\omega_{lo}-\mu)t)
+\end{equation}
+
+\begin{equation}
+    \label{eq:v_rf}
+    V_{RF} = V_{usb}\cos(\nu_{usb}t)+V_{LSB}\cos(\nu_{lsb}t)
+\end{equation}
+
+
+With that being said we could start the math. the voltage at the diodes are given by the equation \ref{eq:v_d1}.
+
+\begin{equation}
+    \label{eq:d1}
+    \begin{gathered}
+    V_{D1}=V_{RF}\angle{(-90)}+V_{lo}\angle{(-180)} \\
+    = V_{usb}\cos(\nu_{usb}t-\pi/2)+V_{lsb}\cos(\nu_{lsb}t-\pi/2) +\\  V_{lo}\cos(\omega_{lo}t-\pi)+\eta(t)\cos((\omega_{lo}+\delta)t-\pi) +\xi(t)\cos((\omega_{lo}-\mu)t-\pi)
+    \end{gathered}
+\end{equation}
+
+
+\begin{align}
+    \label{eq:v_d1}
+    \boxed{
+    V_{D1}=  V_{usb}\sin(\nu_{usb}t)+V_{LSB}\sin(\nu_{lsb}t))
+    - \left[V_{lo}\cos(\omega_{lo}t)+\eta(t)\cos((\omega_{lo}+\delta)t)+\xi(t)\cos((\omega_{lo}-\mu)t) \right]
+    }
+\end{align}
+
+Following the same process the voltage at the diode 2 we obtain the equation
+
+\begin{equation}
+\label{eq:v_d2}
+\boxed{
+    V_{D2} = V_{lo}\sin(\omega_{lo}t)+\eta(t)\sin((\omega_{lo}+\delta)t)+\xi(t)\sin((\omega_{lo}-\mu)t) - \left[V_{usb}\cos(\nu_{usb}t)+V_{LSB}\cos(\nu_{lsb}t))\right]
+    }
+\end{equation}
+
+\vspace{1cm}
+
+The typical lineal model of a diode is given by the equation 
+
+
+\begin{equation}
+    i_{diode} = \alpha_0+\alpha_1 v_d + \frac{\alpha_2 v_d^{2}}{2!}+\ldots 
+\end{equation}
+
+Looking at the polarities of the diodes in the figure \ref{fig:bm_ideal} we obtain the equations
+
+\begin{gather}
+    \label{eq:i_d1_0}
+    I_{D1} = \alpha_0 + \alpha_1 V_{D1} + \alpha_2 \frac{V_{D1}^2}{2}+\ldots \\
+    \label{eq:i_d2_0}
+    I_{D2} = \beta_1 - \beta_2 V_{D2} + \beta_2 \frac{V_{D2}^2}{2}+ \ldots
+\end{gather}
+
+The order 0 are the DC, and the order 1 are RF signals, so  we care about the second order and above coefficient which are the ones who give us the downconverted signals.
+We are going to look at just the 2nd order coefficients.
+\vspace{1cm}
+\textit{Order 2}
+\begin{equation}
+\label{eq:i_d1_complete}
+\begin{gathered}
+    I_{D1} = \frac{\alpha_2}{2} \big\{ \left[ V_{lo}\cos(\omega_{lo}t)+\eta(t)\cos((\omega_{lo}+\delta)t)+
+    \xi(t)\cos((\omega_{lo}-\mu)t)
+    \right]^2 +\\
+    \left[ V_{usb}\sin(\nu_{usb}t)+V_{LSB}\sin(\nu_{lsb}t)\right]^2 - \\
+    2\cdot \left[V_{lo}\cos(\omega_{lo}t)+\eta(t)\cos((\omega_{lo}+\delta)t+\xi(t)\cos((\omega_{lo}-\mu)t))
+    \right]\cdot \left[ 
+    V_{usb}\sin(\nu_{usb}t)+V_{LSB}\sin(\nu_{lsb}t)
+    \right]
+    \big\}
+\end{gathered}
+\end{equation}
+
+\begin{equation}
+    I_{D1}= V_{lo\; stuffs,D1}^2 + V_{RF\: stuffs, D1}^2 - 2(Cross\; terms,D1)
+\end{equation}
+
+We are going to look at the cross term which give us the downconverted RF signal, but keep an eye into the $V_{lo\; stuffs,D1}^2$ where the noise term is downconverted too.
+
+
+\begin{equation}
+    \begin{gathered}
+        Cross\;term,D1 = V_{lo}\cos(\omega_{lo}t)\left(
+        V_{usb}\sin(\nu_{usb}t)+V_{LSB}\sin(\nu_{lsb}t)
+        \right) + \\
+        [\eta(t)\cos((\omega_{lo}+\delta)t)+\xi(t)\cos((\omega_{lo}-\mu)t)] \left(
+        V_{usb}\sin(\nu_{usb}t)+V_{LSB}\sin(\nu_{lsb}t)
+        \right)
+    \end{gathered}
+\end{equation}
+\vspace{0.5cm}
+
+Now we could use the relation $2\cos(\theta)\sin(\phi)=\sin(\theta+\phi)-\sin(\theta-\phi)$ (we are not going to look at the upconverted portion)
+
+
+\begin{equation}
+    \label{eq:d1_cross}
+    \begin{gathered}
+        Cross\;term,D1 = \frac{V_{lo}}{2} \big[
+        V_{usb}(-\sin(\omega_{lo}-\nu_{usb})) +  V_{lsb}(
+        -\sin(\omega_{lo}-\nu_{lsb})) \big] +\\
+        \frac{\eta(t)}{2} \big[ (V_{usb} (-sin(\omega_{lo}+\delta-\nu_{usb})
+        )+V_{lsb}(-sin(\omega_{lo}+\delta-\nu_{lsb}))+\\
+        \frac{\xi(t)}{2} \big[ (V_{usb} (-sin(\omega_{lo}-\mu-\nu_{usb})
+        )+V_{lsb}(-sin(\omega_{lo}+\mu-\nu_{lsb}))
+        \big]
+    \end{gathered}
+\end{equation}
+
+\vspace{1cm}
+\begin{equation}
+    \begin{gathered}
+    Cross\;term,D1 = \frac{V_{lo}}{2} \big[
+        V_{usb}(-\sin(-\omega_{usb})) +  V_{lsb}(
+        -\sin(\omega_{lsb})) \big] +\\
+        \frac{\eta(t)}{2} \big[ (V_{usb} (-\sin(-\omega_{usb}+\delta)
+        )+V_{lsb}(-sin(\omega_{lsb}+\delta)+\\
+        \frac{\xi(t)}{2} \big[ (V_{usb} (-sin(-\omega_{usb}-\mu)
+        )+V_{lsb}(-sin(\omega_{lsb}-\mu)
+        \big]
+    \end{gathered}
+\end{equation}
+\vspace{0.5cm}
+
+\begin{equation}
+    \boxed{
+    \begin{gathered}
+    Cross\;term,D1 = \frac{V_{lo}}{2} \big[
+        V_{usb}(\sin(\omega_{usb})) - V_{lsb}(
+        \sin(\omega_{lsb})) \big] +\\
+        \frac{\eta(t)}{2} \big[ (V_{usb} (sin(\omega_{usb}-\delta)
+        )-V_{lsb}(sin(\omega_{lsb}+\delta)
+        \big]+ \\
+        \frac{\xi(t)}{2} \big[ (V_{usb} (sin(\omega_{usb}+\mu)
+        )-V_{lsb}(sin(\omega_{lsb}-\mu)
+        \big]
+    \end{gathered}
+    }
+\end{equation}
+\vspace{0.5cm}
+
+
+
+For the $I_D2$ we have:
+
+\begin{equation}
+\label{eq:i_d2_complete}
+    \begin{gathered}
+        -I_{D2} = \frac{\beta}{2}\big\{ \left[V_{lo}\sin(\omega_{lo}t)+\eta(t)\sin((\omega_{lo}+\delta)t)+
+        \xi(t)\sin((\omega_{lo}-\nu)t)
+        \right]^2 + \\
+        \left[V_{usb}\cos(\nu_{usb}t)+V_{lsb}\cos(\nu_{lsb}t))\right]^2 - \\
+        2\left[V_{usb}\cos(\nu_{usb}t)+V_{lsb}\cos(\nu_{lsb}t))\right] \cdot \left[ 
+        V_{lo}\sin(\omega_{lo}t)+\eta(t)\sin((\omega_{lo}+\delta)t)+\xi(t)\sin((\omega_{lo}-\nu)t)
+        \right]
+        \big\}
+    \end{gathered}
+\end{equation}
+
+\vspace{1cm}
+Again we write $ -I_{D2}= V_{lo\; stuffs,D2}^2 + V_{RF\: stuffs, D2}^2 - 2(Cross\; terms,D2) $ and look for the cross term.
+
+\begin{equation}
+    \begin{gathered}
+         Cross\;term,D2 = V_{lo}\sin(\omega_{lo}t)\left[
+         V_{usb}\cos(\nu_{usb}t)+V_{LSB}\cos(\nu_{lsb}t))
+         \right]+\\
+        \eta(t)\sin((\omega_{lo}+\delta)t) \left[
+        V_{usb}\cos(\nu_{usb}t)+V_{LSB}\cos(\nu_{lsb}t))
+        \right]
+    \end{gathered}
+\end{equation}
+
+\vspace{1cm}
+\begin{equation}
+    \begin{gathered}
+       Cross\;term,D2 = \frac{V_{lo}}{2}\left[
+        V_{usb}\sin(-\omega_{usb}) + V_{lsb}\sin(\omega_{lsb})
+        \right] + \\
+        \frac{\eta(t)}{2} \left[
+        V_{lsb}\sin(-\omega_{usb}+\delta) + V_{lsb}\sin(\omega_{lsb}+\delta)
+        \right]+\\
+        \frac{\xi(t)}{2} \left[
+        V_{lsb}\sin(-\omega_{usb}-\mu) + V_{lsb}\sin(\omega_{lsb}-\mu)
+        \right]
+    \end{gathered}
+\end{equation}
+
+\vspace{1cm}
+\begin{equation}
+    \boxed{
+    \begin{gathered}
+        Cross\;term,D2 = \frac{V_{lo}}{2}\left[
+         V_{lsb}\sin(\omega_{lsb})-V_{usb}\sin(\omega_{usb})
+        \right] + \\
+        \frac{\eta(t)}{2} \left[
+        V_{lsb}\sin(\omega_{lsb}-\delta)-V_{lsb}\sin(\omega_{usb}+\delta)
+        \right] +\\
+         \frac{\xi(t)}{2} \left[
+        V_{lsb}\sin(\omega_{lsb}+\mu)-V_{lsb}\sin(\omega_{usb}-\mu)
+        \right]
+    \end{gathered}
+    }
+\end{equation}
+
+\vspace{1cm}
+Now finally we could calculate the output as $I_{out} = I_{D1}+I_{D2}$.
+First we are going to look at the cross terms. 
+
+\begin{equation}
+    \boxed{
+    \begin{gathered}
+        I_{out}\;_{cross\; terms} = 2\cdot(cross\;term,D1-cross\;term,D2)\\
+        =(\alpha+\beta)(V_{lo} \big[
+        V_{usb}(\sin(\omega_{usb})) - V_{lsb}(
+        \sin(\omega_{lsb})) \big] +\\
+        \eta(t) \big[ (V_{usb} (sin(\omega_{usb}+\delta)
+        )-V_{lsb}(sin(\omega_{lsb}+\delta)+\\
+        \xi(t) \big[ (V_{usb} (sin(\omega_{usb}+\mu)
+        )-V_{lsb}(sin(\omega_{lsb}-\mu)
+        \big]
+    \end{gathered}
+    }
+\end{equation}
+
+\vspace{1cm}
+From the terms related to $V_{lo}^2\;stuffs$ we have:
+
+\begin{equation}
+    \begin{gathered}
+        I_{out}\;_{lo\;terms} =\frac{\alpha}{2}\left[ V_{lo}\cos(\omega_{lo}t)+\eta(t)\cos((\omega_{lo}+\delta)t)+\xi(t)\cos((\omega_{lo}-\mu)t)\right]^2-\\
+        \frac{\beta}{2}\left[V_{lo}\sin(\omega_{lo}t)+\eta(t)\sin((\omega_{lo}+\delta)t)+\xi(t)\sin((\omega_{lo}-\mu)t)
+        \right]^2
+    \end{gathered}
+\end{equation}
+
+\vspace{0.5cm}
+In the ideal case we have $\alpha = \beta = k$ and this translate to:
+
+\vspace{0.5cm}
+\begin{equation}
+\label{eq:i_out_lo}
+\begin{gathered}
+    I_{out}\;_{lo\;terms} = k \big[
+    V_{lo}^2(\cos(\omega_{lo}))^2-\sin(\omega_{lo})^2) +\\ \eta(t)^2(\cos((\omega_{lo}+\delta)t)^2-sin((\omega_{lo}+\delta))^2)+\\
+    \xi(t)^2(\cos((\omega_{lo}-\mu)t)^2-sin((\omega_{lo}-\mu))^2)+\\
+    2\cdot V_{lo}\eta(t)\left(
+    \cos(\omega_{lo}t)\cos((\omega_{lo}+\delta)t)-
+    \sin(\omega_{lo}t)\sin((\omega_{lo}+\delta)t)
+    \right)+ \\
+    2\cdot V_{lo}\xi(t) \left(
+    \cos(\omega_{lo}t)\cos((\omega_{lo}-\mu)t)-
+    \sin(\omega_{lo}t)\sin((\omega_{lo}-\mu)t)
+    \right)+\\
+    2\cdot \eta(t)\mu(t) \left(
+    \cos((\omega_{lo}+\delta)t)\cos((\omega_{lo}-\mu)t)-
+    \sin((\omega_{lo}+\delta)t)\sin((\omega_{lo}-\mu)t)
+    \right)
+    \big]
+\end{gathered}
+\end{equation}
+
+\vspace{0.5cm}
+Now we use $\cos(2x) = \cos(x)^2-\sin(x)^2$ for the $V_{lo}^2$ part in the equation \ref{eq:i_out_lo}.
+
+
+The terms with $\eta^2$ and $\xi^2$ are disregarded because they should be small.
+
+
+For the rest of the terms we should work a little more...
+
+\begin{equation}
+    \begin{gathered}
+        \cos(x)\cos(x+b)-\sin(x)\sin(x+b) = \\
+        \frac{\cos(2x+b)+cos(b)}{2}-\frac{\cos(b)-\cos(2x+b)}{2} = \\
+        \cos(2x+b)
+    \end{gathered}
+\end{equation}
+
+\vspace{0.5cm}
+
+Now we could write the equation \ref{eq:i_out_lo} as:
+\begin{equation}
+    \boxed{
+    \begin{gathered}
+        I_{out}\;_{lo\;terms} \sim k \big[
+        V_{lo}^2\cos(2\omega_{lo})+
+        V_{lo}\eta(t)\cos((2\omega_{lo}+\delta)t)+V_{lo}\xi(t)\cos((2\omega_{lo}-\mu)t) \big]
+    \end{gathered} }
+\end{equation}
+
+As you see the noise portion in the LSB is rejected by this configuration.
+\vspace{0.5cm}
+
+We could work out the RF terms, but we are going to argue that the RF at $\mathcal{O}(V_{RF}^2)$ are really small so we neglect them. 
+
+
+\section{Digital Balanced Mixer}
+The previous math was considering that the hybrid and the diodes acts ideally, in reality there are imbalances and the cancellation when adding the currents from both diodes is not perfect.
+
+
+In this section we would like to explore the possibility of using a digital system to correct the imbalances previous the adding in order to increase the noise rejection. The setup in this case is shown in the figure \ref{fig:bm_roach}.
+
+\begin{figure}[t]
+    \centering
+    \input{bm_roach}
+    \caption{Digital compensated balanced mixer architecture}
+    \label{fig:bm_roach}
+\end{figure}
+
+
+So we have to repeat our previous math but know considering that the hybrid its not working perfectly and also not considering that the diodes dont have the same behaviour (puaj). Now we will try to spend less time in the math though.
+
+Our inputs are still given by the equations \ref{eq:v_lo2} and \ref{eq:v_rf2}. 
+\begin{equation}
+    \label{eq:v_lo2}
+    V_{lo} = V_{lo}\cos(\omega_{lo}t)+\eta(t)\cos((\omega_{lo}+\delta)t)+\xi(t)\cos((\omega_{lo}-\mu)t)
+\end{equation}
+
+\begin{equation}
+    \label{eq:v_rf2}
+    V_{RF} = V_{usb}\cos(\nu_{usb}t)+V_{LSB}\cos(\nu_{lsb}t)
+\end{equation}
+
+Now we will add the imbalances to the hybrid:
+
+\begin{equation}
+    \label{eq:d1_2}
+    \begin{gathered}
+    V_{D1}=|S_{42}(\omega)|V_{RF}\angle{(-90+\theta_{42}(\omega))}+|S_{12}|V_{lo}\angle{(-180+\theta_{12}(\omega)})= \\
+    V_{D1}=  |S_{42}(\nu_{usb})|V_{usb}\sin(\nu_{usb}t+\theta_{42}(\nu_{usb}))+|S_{42}(\nu_{lsb})|V_{LSB}\sin(\nu_{lsb}t)+\theta_{42}(\nu_{lsb}))-\\ \big[|S_{12}(\omega_{lo})|V_{lo}\cos(\omega_{lo}t+\theta_{12}(\omega_{lo}))+ |S_{12}(\omega_{lo}+\delta)|\eta(t)\cos((\omega_{lo}+\delta)t+\theta_{12}(\omega_{lo}+\delta))+\\|S_{21}(\omega_{lo}-\mu)|\xi(t)\cos((\omega_{lo}-\mu)t+\theta_{12}(\omega_{lo}-\mu)) \big]
+    \end{gathered}
+\end{equation}
+\vspace{1cm}
+
+\begin{equation}
+\label{eq:v_d2_2}
+\begin{gathered}
+V_{D2}=|S_{43}(\omega)|V_{RF}\angle{(-180+\theta_{43}(\omega))}+|S_{13}(\omega)|V_{lo}\angle{(-90+\theta_{13}(\omega)})= \\
+    V_{D2} = |S_{13}(\omega_{lo})|V_{lo}(\sin(\omega_{lo}t+\theta_{13}(\omega_{lo}))+|S_{13}(\omega_{lo}+\delta)|\eta(t)\sin((\omega_{lo}+\delta)t+\theta_{13})+\\
+    |S_{13}(\omega_{lo}-\mu)|\xi(t)\sin((\omega_{lo}-\mu)t+\theta_{13}(\omega_{lo}-\mu))) -\\ \left[|S_{43}(\nu_{usb})|V_{usb}\cos(\nu_{usb}t+\theta_{43}(\nu_{usb}))+|S_{43}(\nu_{lsb})|V_{LSB}\cos(\nu_{lsb}t)+\theta_{43}(\nu_{lsb}))\right]
+\end{gathered}
+\end{equation}
+
+Moving on, the important values of the current of the diodes are the 2nd order terms, we are going to look them separated. The terms $\mathcal{O}(V_{RF}^2)$, $\mathcal{O}(\eta^2)$ and $\mathcal{O}(\xi^2)$ are non important so we don't look them, but we do care when they are of the form $V_{lo}\eta$, $V_{lo}\xi$ or $V_{lo}V_{RF}$.
+
+\vspace{0.5cm}
+\textbf{Diode1}
+\vspace{0.5cm}
+
+\begin{equation}
+\begin{gathered}
+    V_{lo}\;terms = |S_{12}(\omega_{lo})|V_{lo}\big([ |S_{12}(\omega_{lo}+\theta_{12})|\eta(t)(\cos(2\omega_{lo}t+(\theta_{12}(\omega_{lo})+\theta_{12}(\omega_{lo}+\delta))+\delta t)+\\
+    \cos(\delta t+(\theta_{12}(\omega_{lo})-\theta_{12}(\omega_{lo}+\delta)))) + \\
+    |S_{12}(\omega_{lo}-\mu)|(\xi(t)(\cos(2\omega_{lo}t+(\theta_{12}(\omega_{lo})+\theta_{12}(\omega_{lo}-\mu))-\mu t)+\cos(\mu t+(\theta_{12}(\omega_{lo})-\theta_{12}(\omega_{lo}-\mu)))))
+    \big]
+\end{gathered}
+\end{equation}
+
+\vspace{0.5cm}
+\begin{equation}
+    \begin{gathered}
+        Cross\;terms = -2V_{lo}|S_{12(\omega_{lo})}|\cos(\omega_{lo}t+\theta_{12}(\omega_{lo}))[|S_{42}(\nu_{usb})|V_{usb}\sin(\nu_{usb}t+\theta_{42}(\nu_{usb}))+\\|S_{42}(\nu_{lsb})|V_{lsb}\sin(\omega_{lsb}t+\theta_{42}(\nu_{lsb}))] = \\
+        -V_{lo}|S_{12}(\omega_{lo})|[|S_{42}(\nu_{usb})|V_{usb}(\sin(-\omega_{usb}t+(\theta_{12}(\omega_{lo})-\theta_{42}(\nu_{usb}))))+\\|S_{42}(\nu_lsb)|V_{lsb}(\sin(\omega_{lsb}t+(\theta_{12}(\omega_{lo})-\theta_{42}(\nu_{lsb}))))]
+    \end{gathered}
+\end{equation}
+
+Filtering and DC-blocking our input given by the diode 1 is:
+
+\begin{equation}
+    \label{eq:digital_bm1}
+    \boxed{
+    \begin{gathered}
+        ROACH_{in1} =\frac{\alpha_{2}}{2}\big\{ V_{lo}|S_{12}(\omega_{lo})|[|S_{42}(\nu_{usb})|V_{usb}\sin(\omega_{usb}t+(\theta_{42}(\nu_{usb})-\theta_{12}(\omega_{lo})))-\\
+        |S_{42}(\nu_{lsb})|V_{lsb}\sin(\omega_{lsb}t+(\theta_{12}(\omega_{lo})-\theta_{42}(\nu_lsb)))] + \\
+        V_{lo}|S_{12}(\omega_{lo})|[|S_{12}(\omega_{lo}+\delta)|\eta(t)\cos(\delta t+(\theta_{12}(\omega_{lo})-\theta_{12}(\omega_{lo}+\delta)))) +\\ |S_{12}(\omega_{lo}-\mu)|\xi(t)cos(\mu t)+(\theta_{12}(\omega_{lo})-\theta_{12}(\omega_{lo}-\mu))]
+        \big\}
+    \end{gathered}
+    }
+\end{equation}
+
+
+\vspace{0.5cm}
+\textbf{Diode 2}
+\vspace{0.5cm}
+
+\begin{equation}
+\begin{gathered}
+    V_{lo}\;terms =  |S_{13}(\omega_{lo})|V_{lo}\big([ |S_{13}(\omega_{lo}+\delta)|\eta(t)(\cos(\delta t+\theta_{13}(\omega_{lo})-\theta_{13}(\omega_{lo}+\delta))-\\ \cos(2(\omega_{lo})+\theta_{13}(\omega_{lo})+\theta_{13}(\omega_{lo}+\delta)+\delta t))+\\
+    |S_{13}(\omega_{lo}-\mu)|\xi(t)(\cos(\mu t+\theta_{13}(\omega_{lo})-\theta_{13}(\omega_{lo}-\mu))-\cos(2\omega_{lo}+\theta_{13}(\omega_{lo})+\theta_{13}(\omega_{lo}-\mu)-\mu t))
+    \big]
+    \big]
+\end{gathered}
+\end{equation}
+
+
+\vspace{0.5cm}
+\begin{equation}
+    \begin{gathered}
+        Cross\;terms = 2V_{lo}|S_{13}(\omega_{lo})|\sin(\omega_{lo}t+\theta_{13})(\omega_{lo})[|S_43(\nu_{usb})|V_{usb}\cos(\nu_{usb}t+\theta_{43}(\nu_{usb}))+\\|S_{43}(\nu_{lsb})|V_{lsb}\cos(\omega_{lsb}t+\theta_{43}(\nu_{lsb}))] = \\
+        |S_{13}(\omega_{lo})|V_{lo}[|S_{41}(\nu_{usb})|V_{usb}(\sin((\omega_{lo}+\nu_{usb})t+\theta_{13}(\omega_{lo})+\theta_{43}(\nu_{usb}))-\sin(-\omega_{usb}t+(\theta_{13}(\omega_{lo})-\theta_{43}(\nu_{usb})))+\\|S_{43}(\nu_{lsb})|V_{lsb}(\sin((\omega_{lo}+\nu_{lsb})t+\theta_{13}(\omega_{lo})+\theta_{43}(\nu_{lsb}))-\sin(\omega_{lsb}t+(\theta_{13}(\omega_{lo})-\theta_{43}(\nu_{lsb})))
+        ]
+    \end{gathered}
+\end{equation}
+
+Filtering and DC blocking we get 
+
+\begin{equation}
+\label{eq:digital_bm2}
+    \boxed{
+    \begin{gathered}
+        ROACH_{in2} =\frac{ \beta_{2}}{2} \big\{V_{lo}|S_{13}(\omega_{lo})|[ |S_{43}(\nu_{usb})|V_{usb}\sin(\omega_{usb}t+(\theta_{43}(\nu_{usb})-\theta_{13}(\omega_{lo})))\\-|S_{43}(\nu_{lsb})|V_{lsb}\sin(\omega_{lsb}t+(\theta_{13}(\omega_{lo})-\theta_{43}(\nu_{lsb})))]-\\
+        V_{lo}|S_{13}(\omega_{lo})|[|S_{13}(\omega_{lo}+\delta)|\eta(t)\cos(\delta t+\theta_{13}(\omega_{lo})-\theta_{13}(\omega_{lo}+\delta)) +\\ |S_{13}(\omega_{lo}-\mu)|\xi(t)\cos(\mu t+\theta_{13}(\omega_{lo})-\theta_{13}(\omega_{lo}-\mu))] \big\}
+    \end{gathered}
+    }
+\end{equation}
+
+\vspace{0.5cm}
+The equations \ref{eq:digital_bm1} and \ref{eq:digital_bm2} have 4 terms, two comes from the RF usb and lsb, and 2 more comes from the downconverted noise. So we would like to found a method to minimize the noise related terms.
+TODO:SEGUIR EL DESARROLLO DE ACA.
+
+
+
+\section{Dual Sideband Balanced Mixer}
+
+
+\begin{figure}[t]
+    \centering
+    \input{dds_bm}
+    \caption{Proposed architecture for Dual sideband balanced mixer }
+    \label{fig:bm_roach}
+\end{figure}
+
+Here we go again.. One more time we have as inputs:
+\begin{equation}
+    V_{lo} = V_{lo}\cos(\omega_{lo}t)+\eta(t)\cos((\omega_{lo}+\delta)t)+\xi(t)\cos((\omega_{lo}-\mu)t)
+\end{equation}
+
+\begin{equation}
+    V_{RF} = V_{usb}\cos(\nu_{usb}t)+V_{LSB}\cos(\nu_{lsb}t)
+\end{equation}
+
+
+As a convention we use an upper script to denote each hybrid S parameters.
+
+
+The outputs of the first hybrid $h1$ are show in the equation \ref{eq:hyb1_0} and \ref{eq:hyb1_1}.
+\begin{equation}
+    \label{eq:hyb1_0}
+    V_{RF}0 = |S_{42}^1(\nu_{usb})|V_{usb}\sin(\nu_{usb}t+\theta_{42}^1(\nu_{usb}))+|S_{42}^1(\nu_{lsb})|V_{LSB}\sin(\nu_{lsb}t+\theta_{42}^1(\nu_{lsb}))
+\end{equation}
+
+\begin{equation}
+    \label{eq:hyb1_1}
+    V_{RF}1 = -\left[|S_{43}^1(\nu_{usb})|V_{usb}\cos(\nu_{usb}t+\theta_{43}^1(\nu_{usb}))+|S_{43}^1(\nu_{lsb})|V_{LSB}\cos(\nu_{lsb}t+\theta_{43}^1(\nu_{lsb}))\right]
+\end{equation}
+
+
+\vspace{0.5cm}
+\textbf{Hybrid 2}
+\vspace{0.5cm}
+
+\begin{equation}
+\begin{gathered}
+    Va_{D1} = |S_{42}^2(\omega)|V_{RF}0\angle{-90+\theta_{42}^2(\omega)} +|S_{12}^2(\omega)|V_{lo}\angle{-180+\theta_{12}^2(\omega)} = \\
+    -\big[|S_{42}^2(\nu_{usb})||S_{42}^1(\nu_{usb})|V_{usb}\cos(\nu_{usb}t+\theta_{42}^2(\nu_{usb})+\theta_{42}^1(\nu_{usb}))+\\|S_{42}^2(\nu_{lsb})||S_{42}^1(\nu_{lsb})|V_{lsb}\cos(\nu_{lsb}t+\theta_{42}^2(\nu_{lsb})+\theta_{42}^1(\nu_{lsb})) \big]-\\
+    \big[|S_{12}^2(\omega_{lo})|V_{lo}\cos(\omega_{lo}t+\theta_{12}^2(\omega_{lo}))+ |S_{12}^2(\omega_{lo}+\delta)|\eta(t)\cos((\omega_{lo}+\delta)t+\theta_{12}^2(\omega_{lo}+\delta))+\\|S_{21}^2(\omega_{lo}-\mu)|\xi(t)\cos((\omega_{lo}-\mu)t+\theta_{12}^2(\omega_{lo}-\mu)) \big]
+\end{gathered}
+\end{equation}
+
+\vspace{0.5cm}
+
+\begin{equation}
+\begin{gathered}
+    Va_{D2} = S_{43}^2(\omega)|V_{RF}0\angle{-180+\theta_{43}^2(\omega)} +|S_{13}^2(\omega)|V_{lo}\angle{-90+\theta_{12}^2(\omega)} = \\
+    -\big[|S_{43}^2(\nu_{usb})||S_{42}^1(\nu_{usb})|V_{usb}\sin(\nu_{usb}t+\theta_{43}^2(\nu_{usb})+\theta_{42}^1(\nu_{usb}))+\\|S_{43}^2(\nu_{lsb})||S_{42}^1(\nu_{lsb})|V_{lsb}\sin(\nu_{lsb}t+\theta_{43}^2(\nu_{lsb})+\theta_{42}^1(\nu_{lsb})) \big]+ \\
+    \big[|S_{13}^2(\omega_{lo})|V_{lo}\sin(\omega_{lo}t+\theta_{13}^2(\omega_{lo}))+|S_{13}^2(\omega_{lo}+\delta)|\eta(t)\sin((\omega_{lo}+\delta)t+\theta_{13}^2(\omega_{lo+\delta}))+\\
+    |S_{13}^2(\omega_{lo}-\mu)|\xi(t)\sin((\omega_{lo}-\mu)t+\theta_{13}^2(\omega_{lo}-\mu))\big]
+\end{gathered}
+\end{equation}
+
+\vspace{0.5cm}
+\textbf{Diode A1}
+\vspace{0.5cm}
+\begin{equation}
+\begin{gathered}
+    V_{lo}\;terms = |S_{12}^2(\omega_{lo})|V_{lo}\big([ |S_{12}^2(\omega_{lo}+\delta)|\eta(t)
+    \cos(\delta t-\theta_{12}^2(\omega_{lo})+\theta_{12}^2(\omega_{lo}+\delta)) + \\
+    |S_{12}^2(\omega_{lo}-\mu)|\xi(t)\cos(\mu t+(\theta_{12}^2(\omega_{lo})-\theta_{12}^2(\omega_{lo}-\mu)))
+    \big]
+\end{gathered}
+\end{equation}
+
+\begin{equation}
+    \begin{gathered}
+        Cross\;terms = |S_{12}^2(\omega_{lo})|V_{lo} \big[ 
+        |S_{42}^2(\nu_{usb})||S_{42}^1(\nu_{usb})|V_{usb}\cos(\omega_{usb}-\theta_{12}^2(\omega_{lo})+\theta_{42}^1(\nu_{usb})+\theta_{42}^2(\nu_{usb}))+ \\
+        |S_{42}^2(\nu_{lsb})||S_{42}^1(\nu_{lsb})|V_{lsb}\cos(\omega_{lsb}+\theta_{12}^2(\omega_{lo})-\theta_{42}^1(\nu_{lsb})-\theta_{42}^2(\nu_{lsb}))
+        \big]
+    \end{gathered}
+\end{equation}
+
+\vspace{1cm}
+\begin{equation}
+\boxed{
+\label{eq:i_ad1}
+    \begin{gathered}
+        I_{A,D1} = \frac{\alpha_{2}}{2} |S_{12}^2(\omega_{lo})|V_{lo}\big\{ \\
+        |S_{42}^2(\nu_{usb})||S_{42}^1(\nu_{usb})|V_{usb}\cos(\omega_{usb}-\theta_{12}^2(\omega_{lo})+\theta_{42}^1(\nu_{usb})+\theta_{42}^2(\nu_{usb}))+ \\
+        |S_{42}^2(\nu_{lsb})||S_{42}^1(\nu_{lsb})|V_{lsb}\cos(\omega_{lsb}+\theta_{12}^2(\omega_{lo})-\theta_{42}^1(\nu_{lsb})-\theta_{42}^2(\nu_{lsb})) +\\
+        |S_{12}^2(\omega_{lo}+\delta)|\eta(t)\cos
+        (\delta t-\theta_{12}^2(\omega_{lo})+\theta_{12}^2(\omega_{lo}+\delta)) + \\
+        |S_{12}^2(\omega_{lo}-\mu)|\xi(t)\cos(\mu t+(\theta_{12}^2(\omega_{lo})-\theta_{12}^2(\omega_{lo}-\mu)))
+        \big\}
+    \end{gathered}
+    }
+\end{equation}
+
+
+\vspace{0.5cm}
+\textbf{Diode A2}
+\vspace{0.5cm}
+
+\begin{equation}
+\begin{gathered}
+    V_{lo}\;terms = |S_{13}^2(\omega_{lo})|V_{lo}\big([ |S_{13}^2(\omega_{lo}+\delta)|\eta(t)
+    \cos(\delta t-\theta_{13}^2(\omega_{lo})+\theta_{13}^2(\omega_{lo}+\delta))) + \\
+    |S_{13}(\omega_{lo}-\mu)|(\xi(t)\cos(\mu t+(\theta_{13}(\omega_{lo})-\theta_{13}(\omega_{lo}-\mu))))
+    \big]
+\end{gathered}
+\end{equation}
+
+\begin{equation}
+    \begin{gathered}
+        Cross\;terms = -|S_{13}^2(\omega_{lo})|V_{lo} \big[ 
+        |S_{43}^2(\nu_{usb})||S_{42}^1(\nu_{usb})|V_{usb}\cos(\omega_{usb}t-\theta_{13}^2(\omega_{lo})+\theta_{43}^2(\nu_{usb})+\theta_{42}^1(\nu_{usb}))+\\|S_{43}^2(\omega_{lsb})||S_{42}^1(\nu_{lsb})|V_{lsb}\cos(\omega_{lsb}t+\theta_{13}^2(\omega_{lo})-\theta_{43}^2(\nu_{lsb})-\theta_{42}^1(\nu_{lsb})) \big]
+    \end{gathered}
+\end{equation}
+
+
+\begin{equation}
+\label{eq:i_ad2}
+\boxed{
+    \begin{gathered}
+        I_{A,D2} = \frac{\beta_{2}}{2} |S_{13}^2(\omega_{lo})|V_{lo} \big\{ \\
+    \big[ 
+    |S_{43}^2(\nu_{usb})||S_{42}^1(\nu_{usb})|V_{usb}\cos(\omega_{usb}t-\theta_{13}^2(\omega_{lo})+\theta_{43}^2(\nu_{usb})+\theta_{42}^1(\nu_{usb}))+\\|S_{43}^2(\omega_{lsb})||S_{42}^1(\nu_{lsb})|V_{lsb}\cos(\omega_{lsb}t+\theta_{13}^2(\omega_{lo})-\theta_{43}^2(\nu_{lsb})-\theta_{42}^1(\nu_{lsb})) \big] - \\
+    \big[ 
+    |S_{13}^2(\omega_{lo}+\delta)|\eta(t)
+    \cos(\delta t-\theta_{13}^2(\omega_{lo})+\theta_{13}^2(\omega_{lo}+\delta))) + \\
+    |S_{13}(\omega_{lo}-\mu)|(\xi(t)\cos(\mu t+(\theta_{13}(\omega_{lo})-\theta_{13}(\omega_{lo}-\mu)))) \big]
+    \big\}
+    \end{gathered}
+    }
+\end{equation}
+
+
+\vspace{0.5cm}
+\textbf{Hybrid 3}
+\vspace{0.5cm}
+
+\begin{equation}
+    \begin{gathered}
+        Vb_{D1} = |S_{12}^2(\omega)|V_{RF}1 \angle(-180+\theta_{12}(\omega)) + |S_{42}^2(\omega_{lo})|V_{lo}\angle{-90+\theta_{42}^2(\omega_{lo})} =\\
+        \big[
+        |S_{12}^3(\nu_{usb})||S_{43}^1(\nu_{usb})|V_{usb}\cos(\nu_{usb}t+\theta_{43}^1(\nu_{usb})+\theta_{12}^3(\nu_{usb}))+\\
+        |S_{12}^3(\nu_{lsb})||S_{43}^1(\nu_{lsb})|V_{LSB}\cos(\nu_{lsb}t+\theta_{43}^1(\nu_{lsb})+\theta_{12}^3(\nu_{lsb}))\big]  + \\
+        |S_{42}^3(\omega_{lo})|V_{lo}\sin(\omega_{lo}t+\theta_{42}^3(\omega_{lo}))+
+        |S_{42}^3(\omega_{lo}+\delta)|\eta(t)\sin((\omega_{lo}+\delta)t+\theta_{42}^3(\omega_{lo}+\delta))+\\
+        |S_{42}^3(\omega_{lo}-\mu)|\xi(t)\sin((\omega_{lo}-\mu)t+\theta_{42}^3(\omega_{lo}-\mu))
+    \end{gathered}
+\end{equation}
+
+\vspace{1cm}
+
+\begin{equation}
+    \begin{gathered}
+        Vb_{D2} = |S_{13}^2(\omega)|V_{RF}1 \angle(-90+\theta_{13}^3(\omega)) + |S_{43}(\omega)|V_{lo} \angle{-180+\theta_{43}^3(\omega)} = \\
+        -\big[ |S_{13}^3(\nu_{usb})||S_{43}^1(\nu_{usb})|V_{usb}\sin(\nu_{usb}t+\theta_{43}^1(\nu_{usb})+\theta_{13}^3(\nu_{usb}))+\\
+        |S_{13}^3(\nu_{lsb})||S_{43}^1(\nu_{lsb})|V_{LSB}\sin(\nu_{lsb}t+\theta_{43}^1(\nu_{lsb})+\theta_{13}^3(\nu_{lsb})) \big] -\\
+        \big[|S_{43}^3(\omega_{lo})|V_{lo}\cos(\omega_{lo}t+\theta_{43}^3(\omega_{lo}))+ 
+        |S_{43}^3(\omega_{lo}+\delta)|\eta(t)\cos((\omega_{lo}+\delta)t+\theta_{43}^3(\omega_{lo}+\delta))+\\
+        |S_{43}^3(\omega_{lo}-\mu)|\xi(t)\cos((\omega_{lo}-\mu)t+\theta_{43}^3(\omega_{lo}-\mu)) \big]
+    \end{gathered}
+\end{equation}
+
+\vspace{0.5cm}
+\textbf{Diode B1}
+\vspace{0.5cm}
+
+\begin{equation}
+\begin{gathered}
+    V_{lo}\;terms = |S_{42}^3(\omega_{lo})|V_{lo}\big([ |S_{42}^3(\omega_{lo}+\delta)|\eta(t)
+    \cos(\delta t-\theta_{42}^3(\omega_{lo})+\theta_{42}^3(\omega_{lo}+\delta)) + \\
+    |S_{42}^3(\omega_{lo}-\mu)|\xi(t)\cos(\mu t+(\theta_{42}^3(\omega_{lo})-\theta_{42}^3(\omega_{lo}-\mu)))
+    \big]
+\end{gathered}
+\end{equation}
+
+\vspace{0.5cm}
+
+\begin{equation}
+    \begin{gathered}
+    Cross\;terms = |S_{24}^3(\omega_{lo})|V_{lo}\big\{ \\
+    -|S_{12}^3(\nu_{usb})||S_{43}^1(\nu_{usb})|V_{usb}\sin(\nu_{usb}t+\theta_{43}^1(\nu_{usb})+\theta_{12}^3(\nu_{usb})-\theta_{24}^3(\omega_{lo}))+\\
+    |S_{12}^3(\nu_{lsb})||S_{43}^1(\nu_{lsb})|V_{LSB}\cos(\nu_{lsb}t-\theta_{43}^1(\nu_{lsb})-\theta_{12}^3(\nu_{lsb})+\theta_{24}^3(\omega_{lo})) 
+    \big\}
+    \end{gathered}
+\end{equation}
+
+\begin{equation}
+\boxed{
+\begin{gathered}
+    I_{B,D1} = -\frac{\gamma_{2}}{2}|S_{42}^3(\omega_{lo})|\big\{ \\
+    -|S_{12}^3(\nu_{usb})||S_{43}^1(\nu_{usb})|V_{usb}\sin(\nu_{usb}t+\theta_{43}^1(\nu_{usb})+\theta_{12}^3(\nu_{usb})-\theta_{24}^3(\omega_{lo}))+\\
+    |S_{12}^3(\nu_{lsb})||S_{43}^1(\nu_{lsb})|V_{LSB}\sin(\nu_{lsb}t-\theta_{43}^1(\nu_{lsb})-\theta_{12}^3(\nu_{lsb})+\theta_{24}^3(\omega_{lo})) + \\
+    |S_{42}^3(\omega_{lo}+\delta)|\eta(t)
+    \cos(\delta t-\theta_{42}^3(\omega_{lo})+\theta_{42}^3(\omega_{lo}+\delta)) + \\
+    |S_{42}^3(\omega_{lo}-\mu)|\xi(t)\cos(\mu t+(\theta_{42}^3(\omega_{lo})-\theta_{42}^3(\omega_{lo}-\mu)))
+    \big\}
+\end{gathered}
+}
+\end{equation}
+
+
+\vspace{0.5cm}
+\textbf{Diode B2}
+\vspace{0.5cm}
+\begin{equation}
+\begin{gathered}
+    V_{lo}\;terms = |S_{43}^3(\omega_{lo})|V_{lo}\big([ |S_{43}^3(\omega_{lo}+\delta)|\eta(t)
+    \cos(\delta t-\theta_{43}^3(\omega_{lo})+\theta_{43}^3(\omega_{lo}+\delta)) + \\
+    |S_{43}^3(\omega_{lo}-\mu)|\xi(t)\cos(\mu t+(\theta_{43}^3(\omega_{lo})-\theta_{43}^3(\omega_{lo}-\mu)))
+    \big]
+\end{gathered}
+\end{equation}
+
+\vspace{0.5cm}
+
+\begin{equation}
+    \begin{gathered}
+    Cross\;terms = |S_{43}^3(\omega_{lo})|V_{lo}\big\{ \\
+    |S_{13}^3(\nu_{usb})||S_{43}^1(\nu_{usb})|V_{usb}\sin(\omega_{usb}t+\theta_{43}^1(\nu_{usb})+\theta_{13}^3(\nu_{usb})-\theta_{43}(\omega_{lo}))-\\
+    |S_{13}^3(\nu_{usb})||S_{43}^1(\nu_{lsb})|V_{LSB}\sin(\omega_{lsb}t-\theta_{43}^1(\nu_{lsb})-\theta_{13}^3(\nu_{lsb})+\theta_{43}^3(\omega_{lo}))
+    \big\}
+    \end{gathered}
+\end{equation}
+
+
+\vspace{0.5cm}
+
+\begin{equation}
+    \boxed{
+    \begin{gathered}
+    I_{B,D2} = \frac{\sigma}{2}|S_{43}^3(\omega_{lo})|V_{lo} \big\{ \\
+    |S_{13}^3(\nu_{usb})||S_{43}^1(\nu_{usb})|V_{usb}\sin(\omega_{usb}t+\theta_{43}^1(\nu_{usb})+\theta_{13}^3(\nu_{usb})-\theta_{43}(\omega_{lo}))-\\
+    |S_{13}^3(\nu_{usb})||S_{43}^1(\nu_{lsb})|V_{lsb}\sin(\omega_{lsb}t-\theta_{43}^1(\nu_{lsb})-\theta_{13}^3(\nu_{lsb})+\theta_{43}^3(\omega_{lo})) +\\
+    |S_{43}^3(\omega_{lo}+\delta)|\eta(t)
+    \cos(\delta t-\theta_{43}^3(\omega_{lo})+\theta_{43}^3(\omega_{lo}+\delta)) + \\
+    |S_{43}^3(\omega_{lo}-\mu)|\xi(t)\cos(\mu t+(\theta_{43}^3(\omega_{lo})-\theta_{43}^3(\omega_{lo}-\mu)))
+    \big\}
+    \end{gathered}
+    }
+\end{equation}
+
+\newpage
+\subsection{Ideal case}
+Now we take $S_{i,j}^k=1$ and $\theta_{i,j}^k=0$.
+
+\begin{equation}
+    \label{eq:ideal_ia1}
+    \begin{gathered}
+        I_{A,D1} = \frac{\alpha_{2}}{2} V_{lo}\big\{ \\
+        V_{usb}\cos(\omega_{usb})+ 
+        V_{lsb}\cos(\omega_{lsb}) +
+        \eta(t)\cos(\delta t)) +
+        \xi(t)\cos(\mu t) \big\}
+    \end{gathered}
+\end{equation}
+
+\vspace{0.5cm}
+
+\begin{equation}
+    \label{eq:ideal_ia2}
+    \begin{gathered}
+    I_{A,D2} = \frac{\beta_{2}}{2} V_{lo} \big\{ \\
+    \big[ 
+    V_{usb}\cos(\omega_{usb}t)+V_{lsb}\cos(\omega_{lsb}t) \big] - 
+    \big[ \eta(t)\cos(\delta t))+\xi(t)\cos(\mu t) \big]
+    \big\}
+    \end{gathered}
+\end{equation}
+
+\vspace{0.5cm}
+
+\begin{equation}
+\label{eq:ideal_ib1}
+    \begin{gathered}
+    I_{B,D1} = -\frac{\gamma_{2}}{2}\big\{ \\
+    -V_{usb}\sin(\omega_{usb}t)+V_{lsb}\sin(\omega_{lsb}t) +
+    \eta(t)\cos(\delta t) + \xi(t)\cos(\mu t)
+    \big\}
+    \end{gathered}
+\end{equation}
+
+\vspace{0.5cm}
+\begin{equation}
+\label{eq:ideal_ib2}
+    \begin{gathered}
+     I_{B,D2} = \frac{\sigma}{2}|V_{lo} \big\{ \\
+    V_{usb}\sin(\omega_{usb}t)-
+    V_{lsb}\sin(\omega_{lsb}t)+
+    \eta(t)\cos(\delta t) +
+    \xi(t)\cos(\mu t)
+    \big\}
+    \end{gathered}
+\end{equation}
+
+
+Also in ideal case $\alpha=\beta=\gamma=\sigma=k$, adding the equations \ref{eq:ideal_ia1} with \ref{eq:ideal_ia2}, and \ref{eq:ideal_ib1} with \ref{eq:ideal_ib2} give us:
+
+\begin{equation}
+    \label{eq:ideal_ia}
+    I_{A} = I_{A,D1}+I_{A,D2} = kV_{lo}\big[ V_{usb}\cos(\omega_{usb}t)+V_{lsb}\cos(\omega_{lsb}t) ]
+\end{equation}
+
+\begin{equation}
+    \label{eq:ideal_ib}
+    I_{B} = I_{B,D1}+I_{B,D2} = kV_{lo} \big[
+    V_{usb}\sin(\omega_{usb}t)-V_{lsb}\sin{\omega_{lsb}t}
+    \big]
+\end{equation}
+
+And solve the equation we multiply by a $\pi/2$ phase into the equation \ref{eq:ideal_ia} and add and subtract with \ref{eq:ideal_ib}.
+
+
+\begin{gather}
+    I_{usb} = I_{A}\angle{(-\pi/2)} + I_{B} = \\ 
+    I_{usb} = kV_{lo}\big[ V_{usb}\sin(\omega_{usb}t)+V_{lsb}\sin(\omega_{lsb}t)] + kV_{lo} \big[V_{usb}\sin(\omega_{usb}t)-V_{lsb}\sin{\omega_{lsb}t}
+    \big]\\
+    I_{usb} = 2\cdot V_{usb}\sin(\omega_{usb}t)
+\end{gather}
+
+\begin{gather}
+    I_{lsb} = I_{A}\angle{(-\pi/2)} - I_{B} = \\ 
+    I_{lsb} = kV_{lo}\big[ V_{usb}\sin(\omega_{usb}t)+V_{lsb}\sin(\omega_{lsb}t)] - kV_{lo} \big[V_{usb}\sin(\omega_{usb}t)-V_{lsb}\sin{\omega_{lsb}t}
+    \big]\\
+    I_{lsb} = -2kV_{lo}\cdot V_{lsb}\sin(\omega_{lsb}t)
+\end{gather}
+
+\subsection{Non ideal case}
+

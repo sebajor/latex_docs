@@ -1,0 +1,92 @@
+\section{Polyphase Filterbank channelizer}
+
+The standard representation of the PFB is in \ref{eq:standard_pfb} where you have a filter $H$ with $NM$ coefficients $h(n)$. Then the parenthesis terms are telling that you are forming $N$ sub-filters with size $M$, for example the first subfilters should have the coeffiecients $H_{0} = h(0)z^0+h(N)z^{N}+\cdots + h(N\cdot(M-1)N)z^{N\cdot(M-1)N}$ and the second sub-filter have the coefficents $H_{1} = h(1)z^1+h(N+1)z^{N+1}+\cdots + h(N\cdot(M-1)N+1)z^{N\cdot(M-1)N+1}$, etc.
+Each of these subfilters got as input data a downsampled version of $x$. 
+
+\begin{equation}
+    \hat{x} = \sum_{n=0}^{N-1} \left( \underbrace{\sum_{m=0}^{M-1} h(n+mN)x(n+mN)}_{\text{Sub-filter structure}} )\right)W_{N}^{kn}
+    \label{eq:standard_pfb}
+\end{equation}
+
+
+If $x$ is a vector of $NM$ samples then we could write the subfilter structure as the matrix $H_{PFB}$ shown in equation \ref{eq:subfilter}, where each row represents one subfilter $H_{i}$ with $i \in (0,\cdots, N-1)$. The elements of this matrix can be sumarized as the expression in \ref{eq:subfilter_element} where $i \in (0,\cdots, NM-1)$ represents the columns index and $j \in (0,\cdots, N-1)$ represents the row index (I dont remember what is the standard order of this bullshit :p) and $\delta$ is the Kronecker delta.
+
+\begin{equation}
+    \label{eq:subfilter}
+    \mathcal{H}_{PFB} = 
+    \begin{pmatrix}
+        h(0) & 0    &\cdots &0       &h(N)    & 0     & \cdots &  0     & \cdots \\
+        0    & h(1) &0      &\cdots  &0       & h(N+1)& 0      &  0     & \cdots \\
+        0    & 0    &\ddots &0       & \cdots & 0     & \ddots &  0     & \cdots \\
+        0    & 0    &\cdots & h(N-1) &\cdots  & 0     & \cdots &h(2N-1) & \cdots 
+    \end{pmatrix}
+\end{equation}
+
+\begin{equation}
+    \label{eq:subfilter_element}
+    H_{PFB}(i,j)= \sum_{m=0}^{M-1} \delta_{i,(mN+j)}h(i)
+\end{equation}
+
+Then, the inner sum of equation \ref{eq:standard_pfb} can be represneted as the matrix product $H_{PFB}\vec{x}$. The $W_{N}^{nk}$ can be represented as the square matrix \ref{eq:dft_matrix} where the elements of $\mathcal{W}_N$ can be represented as \ref{eq:dft_elements}
+
+\begin{equation}
+    \label{eq:dft_matrix}
+    \mathcal{W}_N = 
+    \begin{pmatrix}
+        W_{N}^{0*0}     & W_{N}^{0*1}       & \cdot  & W_{N}^{0*N-1} \\
+        W_{N}^{1*0}     & W_{N}^{1*1}       & \cdot  & W_{N}^{1*N-1} \\
+        \vdots          & \vdots            & \vdots & \vdots        \\
+        W_{N}^{(N-1)*0} & W_{N}^{(N-1)*1}   & \cdots & W_{N}^{(N-1)(N-1)}
+    \end{pmatrix}
+\end{equation}
+
+\begin{equation}
+    \label{eq:dft_elements}
+    \mathcal{W}_{N}(i,j) = W_{N}^{i*j}
+\end{equation}
+
+Therefore the PFB equation \ref{eq:standard_pfb} can be summarized as equation \ref{eq:pfb_matricial} shows
+\begin{equation}
+    \label{eq:pfb_matricial}
+    \hat{x} = \mathcal{W}_N \mathcal{H}_{PFB} \vec{x}
+\end{equation}
+
+
+And now comes the good shit... To understand what the PFB is doing we compute the matrix $\mathcal{W}_N \mathcal{H}_{PFB}$ show in \ref{eq:filter_dft}.
+The elements of this matrix are shown in the expression \ref{eq:filter_dft_elements}. Then looking at the structure of the matrix \ref{eq:filter_dft} we have that each row has all the $MN$ coeficients of the filter $H$ and the filter is being shifted in frequency by the twiddle factors (or you can think it as you are downconverting the samples from $\vec{x}$ by this twiddle factor, its the same). Then, the overall effect of the PFB+FFT is to create an $N$ efficient digital downconvertions, re-utilizing the filter $H$ for each downconvertion. \footnote{To make it more clear, there is a way to invert the order of $\mathcal{W}_N\mathcal{H}$ to $\mathcal{H}\mathcal{W}_N$ modifiying a little bit the matrices.}.
+
+\begin{equation}
+    \label{eq:filter_dft}
+    \mathcal{W}_N\mathcal{H}_{PFB} = 
+    \tiny{
+    \begin{pmatrix}
+        h(0)W_{N}^{0*0} & h(1)W_{N}^{0*1} & \cdots & h(N)W_{N}^{0*0} &\cdots &h(N(M-1))W_{N}^{0*0)} &\cdots &h(NM-1)W_N^{0*(N-1)}\\
+        h(0)W_{N}^{1*0} & h(1)W_{N}^{1*1} & \cdots & h(N)W_{N}^{1*0} &\cdots &h(N(M-1))W_{N}^{1*0)} &\cdots &h(NM-1)W_N^{1*(N-1)}\\
+        \vdots          & \vdots          & \vdots & \cdots               &\vdots & \vdots               &\vdots &\cdots              \\ 
+        h(0)W_{N}^{(N-1)*0} & h(1)W_{N}^{(N-1)*1} & \cdots \cdots &h(N)W_{N}^{(N-1)*0} &\cdots &h(N(M-1))W_{N}^{(N-1)*0)} &\cdots &h(NM-1)W_N^{(N-1)*(N-1)}\\
+    \end{pmatrix}
+}
+\end{equation}
+
+\begin{equation}
+    \label{eq:filter_dft_elements}
+    \mathcal{W}_N\mathcal{H}_{PFB} (i,j) = h(i)W_{N}^{i \cdot j}
+\end{equation}
+
+Finally, as all this matrix products are being made over a single vector there is no problem to extend this to multiple sources. For example if you have $k$ signals $x^{i}$ that you want to pass over this matrices you can write $x$ as $(NM, K)$ matrix (again I dont remember how is the naming convention of this bullshit) in \ref{eq:samples_matrix} and equation $\hat{x} = \mathcal{W}_N \mathcal{H}_{PFB}x$, but now $\hat{x}$ is $(N,K)$ matrix and the column $i$ represents the "Fourier transform" of the signal $i$.
+
+
+\begin{equation}
+    \label{eq:samples_matrix}
+    x = 
+    \begin{pmatrix}
+        x_0^{0} & x_0^1  & \cdots & x_0^{k} \\
+        x_1^{0} & x_1^1  & \cdots & x_1^{k} \\
+        \vdots  & \vdots & \vdots & \vdots  \\
+        x^0_{NM-1} & x_{NM-1}^1  & \cdots & x_{NM-1}^{k} \\
+    \end{pmatrix}
+\end{equation}
+
+
+
+
