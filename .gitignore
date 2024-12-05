@@ -3,3 +3,5 @@ main.log
 main.lof
 main.pdf
 main.toc
+main.out
+*.out

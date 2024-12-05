@@ -1,0 +1,46 @@
+\section{Things to keep in mind}
+
+Here Im placing all the recommendations and things to keep in mind when using this damn system. A lot of this points can be already solved since I put only the ones that were present when I was at the project. Also some of them are just questions that I got but Im too lazy to search the 
+
+\subsection{Astronomical issues}
+\begin{enumerate}
+    \item We did not have a propper justification to our selection of DMs search range, for example if the host fo the transient is indeed in the milky way, then what should be its DMs if passes through all the material? And also what is the expected flux of that event?
+
+    Depending on the obtained DMs values you can delimit more the problem of the dedispersion:
+    \begin{itemize}
+        \item If the expected DMs are too small then you should focus in the FPGA dedispersion.
+        \item If the expected DMs are in a medium range then you can integrate a little bit in the FPGA, send the data to a computer with a ring-buffer system like that is looking for events.
+        \item If the expected DMs is huge then you can disregard the FPGA dedispersion, which is one of the most expensive parts of the FPGA system and one of the culprits that the compilation process is such a pain.
+    \end{itemize}
+        In my bias opinion, I think if you dont have strong reasons to make the dedispersion in the FPGA its better to be away from it. The FPGA dedispersor ts really resource hungry and you only could have a couple of DM trials. I would point the efforts in the second option trying to push as low as you can the integration and pass the problem to the computer.
+        
+    \item Can we test the system with a strong pulsar? My guess is that we cannot since the beam of the antenna is too wide and the pulsar signal will be convoluted with the surrounding temperatures. Then is worth to try to test the system in a big antenna, with a narrow main lobe?
+\end{enumerate}
+
+\subsection{Antenna-Receiver issues}
+\begin{enumerate}
+    \item In the current incarnation the system only uses one polarization. Some of the detected FRBs showed some weird polarization behaviour, so the big crossroad here for the future is: a) Handle both polarizations by their own and being able to do polarimetry; or b) Sum both polarizations to have an increase in the SNR.
+        My two cents goes to the b) option, since the sensitivity of the system is not great I think you will win more doing that.
+    \item How is the cross-pol behaving now? We just put some loads in the polarization thats was not being used, I guess thats ok but Im not 100\% sure that behaving correctly (Diego is the guy to ask this).
+
+    \item There is a cross-talk between the receiver chains? The symptom of the cross-talk that I saw was that receivers chains with different loads at the input had stable phase values (it should be complete noise since the values are not correlated, and it is not fault of the FPGA since I tested it without the receivers). This issue also makes impractical to have good DOA system since the phase will always have coherent term and then it wont go away when integrating.
+
+    \item The biggest enemy we had was the unknown sources of RFI. Since the frequency is low then a lot of devices introduce signals that got into the receivers, for example we found network switches, air conditioners, cell phones that radiates in the band. This devices dont necessarily uses this part of the spectrum on purpose, my guess is that producer did not care to measure its behavior at that range (bcs how would care?). So be really cautius with the new devices that you place, and the worst part is that the process is just trial and error.
+
+    \item The temperature calibrator gaves only the receiver temperature and dont consider the antenna.
+
+\end{enumerate}
+
+\subsection{FPGA issues}
+\begin{enumerate}
+    \item Make a ADC raw data measurment to obtain the good gain value for the requantization of the ADC data that goes into the DRAM ring buffer.
+    \item The DRAM ring buffer is not easy to mantain (damn you, simulink!). I recomend take the HDL I started to have a new interface with the DRAM (it even has some simulations to start right away and has to be tested in the FPGA to verify if its correct).
+    \item To reduce the reading time of the DRAM ring buffer you can interface it with the 10Gbe interface. There the control logic is not that easy since the words of the DRAM are 288 bits and the 10Gbe port are 256bits, so there is always a fractional part that is being left. But again, I started to code the interface and there are some simulations to start with.
+    \item Currently the CASPER ethernet block has a problem with the placing, there should be one constrain file that limits the placement of some parts or you can get routing issues. Now this is done by a dirty UCF file that forces you to use the same name \textit{arte.slx} in all the models. You can make a smart constrain file (you can take as example the 10Gbe block).
+
+\end{enumerate}
+
+
+
+
+

@@ -1,0 +1,7 @@
+
+THIS GOES IN OTHER PART!!!
+\begin{itemize}
+    \item The configuration file is a yaml file that sets up the hyperparameters of the system. Where one important field are the ethernet interfaces, we have 3 different interfaces: the control interface, the DRAM connection where the raw data transfer occurs  and the 10Gbe interface where the FPGA is constantly sending integrated spectras. The control interface goes to the \textbf{powerpc} port in the RAOCH, the DRAM transfer port goes connected to the \textbf{FPGA} and the 10Gbe goes to the chanel 0 of the Mezzanine0.
+    \item
+    \item By default the linux system is not prepared to handle the amount of data coming in the 10Gbe, so you need to configure it a little bit increasing the buffers and configuring the PCIe.
+\end{itemize}
