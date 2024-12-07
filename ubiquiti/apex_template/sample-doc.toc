@@ -1,0 +1,2 @@
+\contentsline {section}{\numberline {1}General information and sources}{4}{}%
+\contentsline {section}{\numberline {2}Main Text}{4}{}%

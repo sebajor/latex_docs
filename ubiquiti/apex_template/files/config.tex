@@ -1,0 +1,31 @@
+\section{Configuration}
+
+\subsection{Brand new device}
+
+\subsubsection{Ethernet connection}
+The default ubiquiti is configured to have the IP \textbf{192.168.1.20} in the LAN port, you can connect directly to it if you set up your computer with a manual IP in the same subnet (eg \textbf{192.168.1.123}).
+
+
+If you set correctly the IP in your computer then you should be able to ping the device, if thats not the case could mean that the ubiquiti was already configured and the IP changed. If the IP was changed you can restore the default configuration pressing the reset button for more than 10 seconds.
+
+
+When you have manage to ping the device, you can open a browser and type the IP \textbf{192.168.1.20}. There you will have the configuration webpage of the ubiquiti\footnote{The certificates that the webapage uses are old, so some browser will complain about being risk, at least in Firefox you can just accept the risk and continue.}.
+
+The first page will ask you to set the country and the language, and also to agree to the terms and conditions of ubiquiti.
+The second page will ask you to provide an username and a password for the system. This will be the credential that will be asked in a later configuration.
+
+
+\subsubsection{WiFi connection}
+
+Another option is to connect via WiFi that the ubiquiti has, the name of this SSID is \textbf{R2AC-PRISM:<MAC-address>}. 
+
+In this case you have to search \textbf{192.168.172.1} in the browser to get into the configuration page, where you have to set the username and the password.
+
+It is really important to note that even the Rocket 2AC works in the 2.4GHz range, the RF communication that is between two ubiquiti devices is not the same as the one used in the WiFi, they are completely different networks. And for testing it is better to be connected to the ethernet LAN port, since it is ensure that the LAN and the RF communication is "bridged" (ie the devices connected to the LAN port are in the same network than the transmitter/receiver, and therefore the device can see them).
+
+
+
+
+
+
+

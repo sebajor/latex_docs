@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage{APEXDocumentationStandard}
+\date{\today}
+\DocumentType{Test Doc}
+\DocumentNumber{XXX-TST-0000}
+\Revision{0.0}
+% Document category: 1,2,3 or 4 with 4 being "general audience"
+\Category{4}
+\ContactAuthor{A.\ Apex}
+
+% Uncomment the next six lines for meeting minutes
+\approved{NN}
+\approvedInstitute{NNN}
+\approvedDate{Month Date, Year}
+\released{NN}
+\releasedInstitute{NNN}
+\releasedDate{Month Date, Year}
+
+\keywords{Data Format, FITS, APEX}
+
+% For figures:
+\usepackage{graphicx}
+
+\title{Document Title (long, longer, longest title in the world)}
+\author{}
+
+% Uncomment next line for draft documents
+\draft
+
+\begin{document}
+\maketitle
+
+% Uncomment "Change Record" for meeting minutes
+\newpage
+\begin{center}
+%{\it \large Change Record}\\[5mm]
+{\sf
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+Revision & Date & Author & Section/ & Remarks \\
+         &      &        & Page affected  &         \\
+\hline
+0& 2002-08-28 & A.\ Apex & All & Initial Version   \\
+\hline
+\end{tabular}
+\vfill
+}
+\end{center}
+\newpage
+
+{\sf \tableofcontents}
+\newpage
+
+% Begin with main text here
+\input{files/intro}
+
+\section{Main Text}
+Test. Test. Test.
+
+\begin{figure} 
+\resizebox{\hsize}{!}{
+\includegraphics[angle=0, width=16cm]{images/APEX_Logo_August_2005.pdf}
+}
+\caption[] {The APEX document logo.}
+\label{fig:apexlogo} \begin{flushright} \begin{minipage}{88 mm}
+\end{minipage} \end{flushright}
+\end{figure}
+\end{document}

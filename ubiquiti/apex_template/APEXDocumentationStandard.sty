@@ -1,0 +1,247 @@
+% modifications to the standard LaTeX styles
+\RequirePackage{fancyhdr}
+\RequirePackage{graphicx}
+\makeatletter
+\textheight 675pt
+\textwidth 460pt
+\oddsidemargin 0pt
+\evensidemargin 0pt
+\marginparwidth 50pt
+\topmargin -50pt
+\parindent 0pt
+\brokenpenalty=10000
+\sloppy
+
+\def\draft{
+  % Include a background ("watermark") image:
+
+  % Store graphics in a box
+  \newsavebox{\draftwm}
+  \sbox{\draftwm}
+    {\includegraphics[keepaspectratio,height=0.8\paperheight,width=0.8\paperwidth]{images/draft.pdf}}
+ 
+  \fancypagestyle{empty}{%
+  \fancyhead{}%                                   % Empty header
+  \fancyfoot{}%                                   % Empty footer
+  \renewcommand{\headrulewidth}{0cm}              % Get rid of line
+  \fancyhead[C]{\setlength{\unitlength}{1cm}
+  \begin{picture}(0,0)
+    \put(-8.5,-25){\usebox{\draftwm}}
+    \fancyfoot{}
+  \end{picture}}}
+  }
+
+\pagestyle{myheadings}
+%\markboth{ \hfil \protect\@date}
+% {\protect\@date \hfil }
+
+% Table of contents : redefine box size for numbers (default is too small)
+\def\l@subsection{\@dottedtocline{2}{1.5em}{4.3em}}
+\def\l@subsubsection{\@dottedtocline{3}{3.8em}{6.2em}}
+\def\l@paragraph{\@dottedtocline{4}{7.0em}{8.1em}}
+\def\l@subparagraph{\@dottedtocline{5}{10em}{10em}}
+%
+% references environment
+% \list parameters have been adjusted in the `thebibliography'
+% environment to the match A&A layout of References.
+%\def\thebibliography#1{\section*{References\markboth
+% {REFERENCES}{REFERENCES}}\list
+% The \arabic{enumi} command has been removed because we don't use
+% numbered citations in astronomical journals.
+% {}{\setlength\labelwidth{1.4em}\leftmargin\labelwidth
+% \setlength\parsep{0pt}\setlength\itemsep{0pt}
+% \setlength{\itemindent}{-\leftmargin}
+% \usecounter{enumi}}
+% \def\newblock{\hskip .11em plus .33em minus -.07em}
+% \sloppy
+% \sfcode`\.=1000\relax}
+%\let\endthebibliography=\endlist
+%
+%\newenvironment{captions}
+\def \captions    {\newcounter{fign}\section*{Figure Captions}
+        \begin{list}{\bf Fig. \Arabic{fign}.}
+        {\usecounter{fign}\setlength{\leftmargin}{0mm}
+        \setlength{\itemindent}{0mm}}
+        \small}
+\def \endcaptions    {\end{list}\normalsize}
+%
+\def\@listI{\leftmargin\leftmargini 
+ \parsep 4pt plus 2pt minus 1pt
+ \topsep \parsep \itemsep \z@}
+\let\@listi\@listI
+\@listi 
+\def\@listii{\leftmargin\leftmarginii
+ \labelwidth\leftmarginii\advance\labelwidth-\labelsep
+ \parsep \z@ \topsep \z@}
+\def\@listiii{\leftmargin\leftmarginiii
+ \labelwidth\leftmarginiii\advance\labelwidth-\labelsep }
+\def\@listiv{\leftmargin\leftmarginiv
+ \labelwidth\leftmarginiv\advance\labelwidth-\labelsep}
+\def\@listv{\leftmargin\leftmarginv
+ \labelwidth\leftmarginv\advance\labelwidth-\labelsep}
+\def\@listvi{\leftmargin\leftmarginvi
+ \labelwidth\leftmarginvi\advance\labelwidth-\labelsep}
+\def\labelitemi{\bf --}
+\def\labelitemii{$\cdot$}
+\def\labelitemiii{$\circ$}
+\def\shortlist{\ifnum \@itemdepth >3 \@toodeep\else \advance\@itemdepth \@ne
+\edef\@itemitem{labelitem\romannumeral\the\@itemdepth}%
+\list{--}{\parsep\z@ \topsep\z@}\fi}
+\let\endshortlist=\endlist
+%
+% \Revision
+\newif\if@Revision \@Revisionfalse
+\newcommand{\Revision}[1]
+{\@Revisiontrue\gdef\@Revision{#1}}
+% \Category
+\newif\if@Category \@Categoryfalse
+\newcommand{\Category}[1]
+{\@Categorytrue\gdef\@Category{#1}}
+% \DocumentType
+\newif\if@DocumentType \@DocumentTypefalse
+\newcommand{\DocumentType}[1]
+{\@DocumentTypetrue\gdef\@DocumentType{#1}}
+% \DocumentNumber
+\newif\if@DocumentNumber \@DocumentNumberfalse
+\newcommand{\DocumentNumber}[1]
+{\@DocumentNumbertrue\gdef\@DocumentNumber{#1}}
+% \ContactAuthor
+\newif\if@ContactAuthor \@ContactAuthorfalse
+\newcommand{\ContactAuthor}[1]
+{\@ContactAuthortrue\gdef\@ContactAuthor{#1}}
+% \approved
+\newif\if@approved \@approvedfalse
+\newcommand{\approved}[1]
+{\@approvedtrue\gdef\@approved{#1}}
+% \approvedInstitute
+\newif\if@approvedInstitute \@approvedInstitutefalse
+\newcommand{\approvedInstitute}[1]
+{\@approvedInstitutetrue\gdef\@approvedInstitute{#1}}
+% \approvedDate
+\newif\if@approvedDate \@approvedDatefalse
+\newcommand{\approvedDate}[1]
+{\@approvedDatetrue\gdef\@approvedDate{#1}}
+% \released
+\newif\if@released \@releasedfalse
+\newcommand{\released}[1]
+{\@releasedtrue\gdef\@released{#1}}
+% \releasedInstitute
+\newif\if@releasedInstitute \@releasedInstitutefalse
+\newcommand{\releasedInstitute}[1]
+{\@releasedInstitutetrue\gdef\@releasedInstitute{#1}}
+% \releasedDate
+\newif\if@releasedDate \@releasedDatefalse
+\newcommand{\releasedDate}[1]
+{\@releasedDatetrue\gdef\@releasedDate{#1}}
+% \keywords
+\newif\if@keywords \@keywordsfalse
+\newcommand{\keywords}[1]
+{\@keywordstrue\gdef\@keywords{#1}}
+%
+% \maketitle
+%
+%\def\@maketitle{
+\renewcommand{\maketitle}{
+\setlength{\unitlength}{1mm}
+\noindent\begin{picture}(180,215)(0,0)
+%
+\put(-5,174){
+  \includegraphics[width=46mm,height=46mm]{images/APEX_Logo_August_2005.pdf}}
+\put(-5,173){\framebox(48,48){}}
+%
+\put(43,173){\framebox(80,48){
+  \scalebox{1.2}{\begin{minipage}[b]{75mm}
+  {\begin{center}
+   \Large {\bf Atacama Pathfinder
+
+   EXperiment}
+
+   \rule{10mm}{1pt}
+
+   \@DocumentType
+   \end{center}}
+  \end{minipage}}} }
+%
+\put(123,173){\framebox(50,48){
+  \begin{minipage}[b]{48mm}
+  \tabcolsep2pt
+  \begin{tabular}{|ll|}
+  \hline
+  \multicolumn{2}{|l|}{\sf APEX-\@DocumentNumber} \\
+  \hline
+  & \\
+  \hline
+  \sf Revision: & \sf \@Revision \\
+  \hline
+  & \\
+  \hline
+  \sf Release: & \sf \@date \\
+  \hline
+  & \\
+  \hline
+  \sf Category: & \sf \@Category \\
+  \hline
+  & \\
+  \hline
+  \sf Author: & \sf \@ContactAuthor \\
+  \hline
+  \end{tabular}\end{minipage}}}
+%
+% Title
+%
+\put(13,135){
+\begin{minipage}[b]{140mm}
+\begin{center}
+{\Huge \bf \@title}
+\end{center}
+\end{minipage}}
+
+%
+% Author list
+%
+\put(13,75){
+\begin{minipage}[b]{140mm}
+{\Large \@author}
+\end{minipage}}
+%
+% Owner
+%
+%\if@owner \put(30,62){Owner: {\large \@owner}} \fi
+%\put(20,57){\framebox(130,10){}}
+%
+% Keywords
+%
+%\put(20,35){\framebox(130,22){}}
+\put(8,49) {\framebox(160,16){}}
+\if@keywords \put(13,60) {\underline{\bf \sf Keywords:} {\large \@keywords}} \fi
+\put(8,40) {\framebox(160,9){}}
+\put(12,44) {Author Signature: \@ContactAuthor}
+\put(103,44) {Date: \@date}
+
+\put(8,24) {\framebox(160,16){}}
+\put(12,35) {Approved by: \@approved}
+\put(12,28) {Institute: \@approvedInstitute}
+\put(103,35) {Signature: \@approved}
+\put(103,28) {Date: \@approvedDate}
+
+\put(8,6)  {\framebox(160,18){}}
+\put(12,20) {Released by: \@released}
+\put(12,12) {Institute: \@releasedInstitute}
+\put(103,20) {Signature: \@released}
+\put(103,12) {Date: \@releasedDate}
+
+\end{picture}
+}
+\pagestyle{fancy}
+\lhead{\sf APEX}
+\rhead{\sf \protect\@title}
+\chead{}
+\renewcommand{\headrulewidth}{0pt}
+%\lfoot{\protect\@date}
+\cfoot{\sf Page \thepage}
+\rfoot{\sf Contact author: \@ContactAuthor}
+%\lfoot{Create Date: \protect \@date}
+\newcommand{\cdate}{\@date}
+\lfoot{\sf Create Date: \cdate}
+\renewcommand{\footrulewidth}{0pt}
+\thispagestyle{empty}\@thanks

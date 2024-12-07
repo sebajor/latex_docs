@@ -1,0 +1,13 @@
+The APEX PDFLatex document style file
+=====================================
+
+This style file is made for "pdflatex". It will not work with normal Latex.
+Figures must be included using PDF format. A sample document is provided to
+show the usage of the style file elements.
+
+Please also download the APEX-logo.pdf and draft.pdf files.
+
+For MS Word users there is also an APEX Word Document Template available.
+Please check the BSCW server.
+
+Dirk Muders, MPIfR, 11/2002
