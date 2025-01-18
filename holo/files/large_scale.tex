@@ -1,0 +1,20 @@
+\section{Large Scale removal}
+
+
+\subsection{}
+The Zernike fitting its done in the aperture with the magnitude and phase values. The representation follows the one used in \quote{cassanelli_oof} where the aperture is model as the equation \ref{eq:oof_aperture} where the $B$ term represents the blockage of the telescope, $E(x,y)$ is the illumination and $\phi_z$ represents the large scale errors using the Zernike polynomials as the equation \ref{eq:oof_zernike_errors}, where the $k_{m,n}$ term are the coefficient of each Zernike polynomial.
+
+
+The main advantage of using the Zernike fitting is that the contribution of each optical aberration can be separated from the rest and you can determine if the telescope has an optical issue.
+
+
+\begin{equation}
+    f(x,y) = B(x,y)E(x,y)e^{i k \phi_z(x,y)}
+    \label{eq:oof_aperture}
+\end{equation}
+
+\begin{equation}
+    \phi_z(x,y) =  \sum_n \sum_m k_{n,m}U^{m}_{n}(\rho, \theta)
+    \label{eq:oof_zernike_errors}
+\end{equation}
+
