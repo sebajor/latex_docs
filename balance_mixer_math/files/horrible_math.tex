@@ -1,0 +1,228 @@
+\section{Ideal Balanced Mixer}\label{section-introduction}
+
+\begin{figure}[t]
+    \centering
+    \input{images/bm_ideal}
+    \caption{Balanced mixer architecture}
+    \label{fig:bm_ideal}
+\end{figure}
+
+
+The figure \ref{fig:bm_ideal} shows the typical balanced mixer setup. In our math we are going to use a 90° hybrid with the S matrix of the equation \ref{eq:s_hybrid}.
+
+\begin{equation}
+    \label{eq:s_hybrid}
+    S = \frac{-1}{\sqrt{2}}
+    \begin{pmatrix}
+        0 & j & 1 & 0 \\
+        j & 0 & 0 & 1 \\
+        1 & 0 & 0 & j \\
+        0 & 1 & j & 0 
+    \end{pmatrix}
+\end{equation}
+
+
+
+The voltage at the inputs of the hybrid are given \ref{eq:v_lo} where $\eta$ represent the noise of the local oscillator, and the equation \ref{eq:v_rf} is the input of the RF, where $\nu_{usb}=\omega_{lo}+\omega_{lsb}$ and $\nu_{lsb}=\omega_{lo}-\omega_{lsb}$ where $\omega_{usb}$ and $\omega_{lsb}$ will be our IF signals.
+
+\begin{equation}
+    \label{eq:v_lo}
+    \begin{gathered}
+    V_{lo} = \textcolor{red}{V_{lo}\cos(\omega_{lo}t)}+
+    \textcolor{Magenta}{\eta_{usb}\cos((\omega_{lo}+\Delta)t+\phi_{usb})} +
+    \textcolor{blue}{\eta_{lsb}\cos((\omega_{lo}-\Delta)t+\phi_{lsb})}
+    \end{gathered}
+\end{equation}
+
+\begin{equation}
+    \label{eq:v_rf}
+    V_{RF} = \textcolor{ForestGreen}{V_{usb}\cos(\nu_{usb}t)}+\textcolor{orange}{{V_{lsb}}\cos(\nu_{lsb}t)}
+\end{equation}
+
+
+The voltage at the diode 1 should be given by the equation \ref{equation:diode1_general} where for an ideal hybrid $|S_{21}|=|S_{42}|=1$ and $\theta_{42}=\theta_{12}=0$. 
+\begin{equation}
+    \label{equation:diode1_general}
+    V_{D1} = |S_{42}(\omega)|V_{RF} \angle{(-90+\theta_{42}(\omega))} + |S_{21}|V_{lo}\angle{(-180+\theta_{21}(\omega))}
+\end{equation}
+
+
+\begin{equation}
+    \begin{gathered}
+    V_{D1} = \textcolor{ForestGreen}{|S_{24}(\nu_{usb})| V_{usb}\sin(\nu_{usb}t+\theta_{24}(\nu_{usb}))} + 
+    \textcolor{orange}{|S_{24}(\nu_{lsb})|V_{lsb}\sin(\nu_{lsb}t+\theta_{24}(\nu_{lsb}))} \\
+    \textcolor{red}{-|S_{21}(\omega_{lo})|V_{lo}\cos(\omega_{lo}t+\theta_{21}(\omega_{lo}))} \\
+    \textcolor{Magenta}{-|S_{21}(\omega_{lo}+\Delta)|\eta_{usb}\cos((\omega_{lo}+\Delta)t+\phi_{usb}+\theta_{21}(\omega_{lo}+\Delta))} \\
+    \textcolor{blue}{
+    -|S_{21}(\omega_{lo}-\Delta)|\eta_{lsb}\cos((\omega_{lo}-\Delta)t+\phi_{lsb}+\theta_{21}(\omega_{lo}-\Delta))
+    }
+    \end{gathered}
+\end{equation}
+
+
+In the same way we obtain the equation for the voltage in the diode 2
+\begin{equation}
+    V_{D2} = |S_{34}(\omega)|V_{rf}\angle{(-180+\theta_{34})}+|S_{31}(\omega)|V_{lo}\angle{(-90+\theta_{31}(\omega))}
+\end{equation}
+
+\begin{equation}
+    \begin{gathered}
+        V_{D2} = \textcolor{ForestGreen}{-|S_{34}(\nu_{usb})|V_{usb}\cos(\nu_{usb}t+\theta_{34}(\nu_{usb}))
+        }
+        \textcolor{orange}{
+        -|S_{34}(\nu_{lsb})|V_{lsb}\cos(\nu_{lsb}t+\theta_{34}(\nu_{lsb}))
+        }\\
+        \textcolor{red}{+|S_{31}(\omega_{lo})|V_{lo}\sin(\omega_{lo}t+\theta_{31}(\omega_{lo}))}\\
+        \textcolor{magenta}{+|S_{31}(\omega_{lo}+\Delta)|\eta_{usb}\sin((\omega_{lo}+\Delta)t+\phi_{usb}+\theta_{31}(\omega_{usb}+\Delta))}\\
+        \textcolor{blue}{+|S_{31}(\omega_{lo}-\Delta)|\eta_{lsb}\sin((\omega_{lo}-\Delta)t+\phi_{lsb}+\theta_{31}(\omega_{usb}-\Delta))}
+    \end{gathered}
+\end{equation}
+
+\vspace{1cm}
+
+
+The typical linearized model of a diode is given by the equation \ref{eq:diode_eq}, to not go crazy with the terms we only look at the second order terms.  We also argue that only the terms that contain $V_{lo}$ are be important for our analysis due the LO is the strongest signal, so the cross terms that does not contain it are neglectable. 
+
+\begin{gather}
+    \label{eq:diode_eq}
+    I_{D1} = \alpha_0 + \alpha_1 V_{D1} + \alpha_2 \frac{V_{D1}^2}{2}+\ldots \\
+    \label{eq:i_d2_0}
+    I_{D2} = \beta_1 - \beta_2 V_{D2} + \beta_2 \frac{V_{D2}^2}{2}+ \ldots
+\end{gather}
+
+\vspace{2cm}
+
+\begin{equation}
+    \label{eq:d1_signal}
+    \begin{gathered}
+        I_{D1, signal} = \alpha_{2} \biggl[ \textcolor{red}{V_{lo}|S_{21}(\omega_{lo})|}
+        \textcolor{ForestGreen}{|S_{24}(\nu_{usb})|V_{usb}}\sin(\textcolor{ForestGreen}{\omega_{usb}t+\theta_{24}(\nu_{usb})}\textcolor{red}{-\theta_{21}(\omega_{lo})})+ \\
+        \textcolor{red}{V_{lo}|S_{21}(\omega_{lo})|}
+        \textcolor{orange}{|S_{24}(\nu_{lsb})|V_{lsb}}\sin({\textcolor{ForestGreen}{-\omega_{lsb}t+\theta_{24}(\nu_{usb})}-\textcolor{red}{\theta_{21}(\omega_{lo})}})
+        \biggr]
+    \end{gathered}
+\end{equation}
+
+\begin{equation}
+    \label{eq:d1_noise}
+    \boxed{
+    \begin{gathered}
+        I_{D1, noise} = \alpha_{2} \biggl[ 
+        \textcolor{red}{V_{lo}|S_{21}(\omega_{lo})|}
+        \textcolor{Magenta}{(-|S_{21}(\omega_{lo}+\Delta)|\eta_{usb})}\cos(
+        \textcolor{Magenta}{\Delta t+\phi_{usb}+\theta_{21}(\omega_{lo}+\Delta)}
+        -\textcolor{red}{\theta_{21}(\omega_{lo})}
+        ) \\
+        +
+        \textcolor{red}{V_{lo}|S_{21}(\omega_{lo})|}
+        \textcolor{blue}{(-|S_{21}(\omega_{lo}-\Delta)|\eta_{lsb})}\cos(
+        \textcolor{blue}{-\Delta t+\phi_{lsb}+\theta_{21}(\omega_{lo}-\Delta)}
+        \textcolor{red}{-\theta_{21}(\omega_{lo})}
+        )
+        \biggr]
+    \end{gathered}
+    }
+\end{equation}
+
+%this is a preliminar result
+%\begin{equation}
+%    \begin{gathered}
+%        I_{D2, signal} = \beta_{2}\biggl[
+%            \textcolor{red}{|S_{31}(\omega_{lo})|V_{lo}}
+%            \textcolor{ForestGreen}{\bigr(-|S_{34}(\nu_{usb})|V_{usb}\bigl)}
+%            \bigl(-\sin(
+%            \textcolor{ForestGreen}{\omega_{usb}t+\theta_{34}(\nu_{usb})}
+%            \textcolor{red}{-\theta_{31}(\omega_{lo})}) \bigr)+\\
+%            \textcolor{red}{|S_{31}(\omega_{lo})|V_{lo}}
+%            \textcolor{orange}{\bigr(-|S_{34}(\nu_{lsb})|V_{lsb}\bigl)}
+%            \bigl(-\sin(
+%            \textcolor{orange}{-\omega_{lsb}t+\theta_{34}(\nu_{lsb})}
+%            \textcolor{red}{-\theta_{31}(\omega_{lo})}) \bigr)
+%        \biggr]\\ 
+%    \end{gathered}
+%\end{equation}
+
+\begin{equation}
+    \label{eq:d2_signal}
+    \begin{gathered}
+        I_{D2,signal} = \beta_{2} \biggl[
+            \textcolor{red}{|S_{31}(\omega_{lo})|V_{lo}}
+            \textcolor{ForestGreen}{|S_{34}(\nu_{usb})|V_{usb}}
+            \sin(
+            \textcolor{ForestGreen}{\omega_{usb}t+\theta_{34}(\nu_{usb})}
+            \textcolor{red}{-\theta_{31}(\omega_{lo})})+\\
+            \textcolor{red}{|S_{31}(\omega_{lo})|V_{lo}}
+            \textcolor{orange}{|S_{34}(\nu_{lsb})|V_{lsb}}
+            \sin(
+            \textcolor{orange}{-\omega_{lsb}t+\theta_{34}(\nu_{lsb})}
+            \textcolor{red}{-\theta_{31}(\omega_{lo})})
+        \biggr]
+    \end{gathered}
+\end{equation}
+
+
+\begin{equation}
+    \label{eq:d2_noise}
+    \boxed{
+    \begin{gathered}
+        I_{D2,noise} = \beta_{2} \biggl[
+        \textcolor{red}{|S_{31}(\omega_{lo})|V_{lo}}
+        \textcolor{Magenta}{|S_{31}(\omega_{lo}+\Delta)|\eta_{usb}}
+        \cos(\textcolor{Magenta}{\Delta t+\phi_{usb}+\theta_{31}(\omega_{lo}+\Delta)}
+        \textcolor{red}{-\theta_{31}(\omega_{lo})}) +\\
+        \textcolor{red}{|S_{31}(\omega_{lo})|V_{lo}}
+        \textcolor{blue}{|S_{31}(\omega_{lo}-\Delta)|\eta_{lsb}}
+        \cos(\textcolor{blue}{-\Delta t+\phi_{lsb}+\theta_{31}(\omega_{lo}-\Delta)}
+        \textcolor{red}{-\theta_{31}(\omega_{lo})})
+        \biggr]
+    \end{gathered}      
+    }
+\end{equation}
+
+
+\subsection{Symmetry relations}
+Due symmetry we have some equivalence relations, we use $S_{21} = S_{34}$ and $S_{31}=S_{24}$.
+Replacing that in the equations \ref{eq:d1_noise} and \ref{eq:d2_noise} we obtain 
+
+\begin{equation}
+    \label{eq:d1_noise_sym}
+    \boxed{
+    \begin{gathered}
+        I_{D1, noise} = \alpha_{2} \biggl[ 
+        \textcolor{red}{V_{lo}|S_{21}(\omega_{lo})|}
+        \textcolor{Magenta}{(-|S_{21}(\omega_{lo}+\Delta)|\eta_{usb})}\cos(
+        \textcolor{Magenta}{\Delta t+\phi_{usb}+\theta_{21}(\omega_{lo}+\Delta)}
+        -\textcolor{red}{\theta_{21}(\omega_{lo})}
+        ) \\
+        +
+        \textcolor{red}{V_{lo}|S_{21}(\omega_{lo})|}
+        \textcolor{blue}{(-|S_{21}(\omega_{lo}-\Delta)|\eta_{lsb})}\cos(
+        \textcolor{blue}{-\Delta t+\phi_{lsb}+\theta_{21}(\omega_{lo}-\Delta)}
+        \textcolor{red}{-\theta_{21}(\omega_{lo})}
+        )
+        \biggr]
+    \end{gathered}
+    }
+\end{equation}
+
+
+
+
+\begin{equation}
+    \label{eq:d2_noise_sym}
+    \boxed{
+    \begin{gathered}
+        I_{D2,noise} = \beta_{2} \biggl[
+        \textcolor{red}{|S_{31}(\omega_{lo})|V_{lo}}
+        \textcolor{Magenta}{|S_{31}(\omega_{lo}+\Delta)|\eta_{usb}}
+        \cos(\textcolor{Magenta}{\Delta t+\phi_{usb}+\theta_{31}(\omega_{lo}+\Delta)}
+        \textcolor{red}{-\theta_{31}(\omega_{lo})}) +\\
+        \textcolor{red}{|S_{31}(\omega_{lo})|V_{lo}}
+        \textcolor{blue}{|S_{31}(\omega_{lo}-\Delta)|\eta_{lsb}}
+        \cos(\textcolor{blue}{-\Delta t+\phi_{lsb}+\theta_{31}(\omega_{lo}-\Delta)}
+        \textcolor{red}{-\theta_{31}(\omega_{lo})})
+        \biggr]
+    \end{gathered}      
+    }
+\end{equation}
+

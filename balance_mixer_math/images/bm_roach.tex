@@ -1,0 +1,111 @@
+\def\xmix{14}
+\def\ymix{-2.5}
+\def\ycorr{1.5}
+\newcommand{\compScale}[1]{/tikz/circuitikz/bipoles/length=#1cm}
+
+\begin{circuitikz}[scale=0.7, transform shape]
+
+ 
+
+    %%draw directional couplers and the elements of the synth stage
+    \draw (-3,0) node[style/.expanded=\compScale{3},coupler] (c) {};
+    
+    \draw (\xmix,\ymix) node [mixer] (m1) {};
+    \draw (\xmix,\ymix-4) node [mixer] (m2) {};
+    \draw (\xmix+3, \ymix-2) node [adder] (a) {};
+    \draw node[rectangle, draw] (cte1) at (\xmix, \ymix-2+3.5) {$a+ib$};
+    \draw node[rectangle, draw] (cte2) at (\xmix, \ymix-2-3.5) {$c+id$};
+    
+    \draw node[rectangle, draw, minimum width=2cm,minimum height=2cm ] (r1) at (7,2.) {\begin{tabular}{c}
+         \huge{FFT}
+    \end{tabular}}
+    node[rectangle, draw, minimum width=2cm,minimum height=2cm ] (r2) at (7,-2) {\begin{tabular}{c}
+         \huge{FFT}
+    \end{tabular}};
+
+
+    \draw node[rectangle, draw, minimum width=2cm,minimum height=2cm ] (auto_D2) at (\xmix-0.75,\ycorr) {\begin{tabular}{c}
+         Auto-\\correlation
+    \end{tabular}};
+
+    \draw node[rectangle, draw, minimum width=2cm,minimum height=2cm ] (cross_corr) at (\xmix-0.75,\ycorr+2.5) {\begin{tabular}{c}
+         Cross-\\correlation
+    \end{tabular}};
+
+    \draw node[rectangle, draw, minimum width=2cm,minimum height=2cm ] (auto_D1) at (\xmix-0.75,\ycorr+5) 
+    {\begin{tabular}{c}
+         Auto-\\correlation
+    \end{tabular}};
+
+
+    \draw (cross_corr.east) to [short, -o] ++(4,0)
+    (cross_corr.east) node[right=1.5cm]{};
+    \draw (auto_D1.east) to [short, -o] ++(4,0)
+    (auto_D1.east) node[right=1.5cm]{};
+    \draw (auto_D2.east) to [short, -o] ++(4,0)
+    (auto_D2.east) node[right=3.5cm]{};
+
+    
+    \draw [color=red]
+    (r1.east) to ++(2,0) to ++(0,\ymix-2) to (m1.west) 
+    (m1.east) to (\xmix+3,\ymix) to (a.north)
+    (r2.east) to ++(1,0) to ++(0, \ymix-2) to (m2.west) 
+    (m2.east) to (\xmix+3,\ymix-4) to (a.south)
+    (m1.north) to (cte1.south)
+    (m2.south) to (cte2.north);
+    \draw 
+    (a.east) to [short, -o] ++(1,0)
+    (a.east) node[right=1cm] {
+    \begin{tabular}{c}
+         calibrated \\
+         output
+    \end{tabular}
+    };
+
+    \draw [color=blue]
+    (r1.east) to ++(2.5,0) to ++(0, \ycorr+5-2) to (auto_D1.west)
+    (\xmix-2, \ycorr+3) to ++(-\xmix+12.5,0)
+    (r2.east) to ++(3.5,0) to ++(0, \ycorr+2) to (auto_D2.west)
+    (\xmix-2, \ycorr+2) to ++(-\xmix+13.5075,0) to ++(0, -2.5);
+    
+    
+    \draw
+    (c.port1) to[short,-o] ++(-1,0)
+    (c.port4) to[short,-o] ++(-1,0)
+    (c.port4) node[above left=0.5cm] {\huge{$V_{LO}$}}
+    (c.port1) node[below left=0.5cm] {\huge{$V_{RF}$}}
+    (c.port3) to [diode, l={\huge{$V_{D1}$}}] ++(3.625,0) to ++(0,1.) to (r1.west) %to (m1.south) 
+    (c.port2) to [diode, invert, l_={\huge{$V_{D2}$}}] ++(3.625,0) to ++(0,-1) to (r2.west) %to (m2.north) 
+    ;
+
+       %draw surrounding boxes
+    %roach
+    \draw
+    (3.5,\ycorr+7.25) --(3.5, \ymix-6.5) -- (\xmix+4, \ymix-6.5) -- (\xmix+4, \ycorr+7.25) --(3.5, \ycorr+7.25)
+    ;
+    \draw (3.5, \ycorr+5) node[right=0.75cm]{\huge{Digital Platform}};
+    %calibration subsystem
+    \draw [dash dot, rounded corners, fill=yellow, fill opacity=0.12] (\xmix-3,\ycorr-1.5) -- (\xmix-3,\ycorr+6.5) -- (\xmix+3.65, \ycorr+6.5) -- (\xmix+3.65, \ycorr-1.5) -- (\xmix-3, \ycorr-1.5)
+    ;
+    %%name the subsystem
+    \draw (\xmix+3.65, \ycorr+6.5) node[below left=0.05 and 0.05]{\begin{tabular}{c}
+         Calibration \\
+         subsystem
+    \end{tabular}};
+    
+    ¸%synthesis subsystem
+    \draw [dash dot, rounded corners, fill=yellow, fill opacity=0.12] (\xmix-3, \ymix+2) -- (\xmix-3,\ymix-6) -- (\xmix+3.65, \ymix-6) -- (\xmix+3.65, \ymix+2) --(\xmix-3, \ymix+2)
+    ;
+    %name the subsystem
+    \draw (\xmix+3.65, \ymix+2) node[below left = 0.175 and 0.05]{
+    \begin{tabular}{c}
+         Synthesis\\
+         Subsystem
+    \end{tabular}
+    }
+    ;
+    
+    %\node[rectangle, draw] (r1) at (5, 2) {};
+    %\draw (3.5,5) -- (3.5,-5) -- (13,-5) -- (13,5) -- (3.5, 5);
+    %\node [draw] () at (5,4) {ROACH2};
+\end{circuitikz}

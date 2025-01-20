@@ -1,0 +1,15 @@
+\begin{circuitikz}[scale=0.8, transform shape]
+    \draw (0,0) node[coupler, label={[yshift=-1.5cm]RF Hybrid}] (c) {}
+    (c.port1) to[short,-o] ++(-2,0)
+    (c.port4) to[short,-o] ++(-2,0)
+    (c.port4) node[above, left=2cm] {$V_{LO}$}
+    (c.port1) node[below, left=2cm] {$V_{RF}$}
+    (c.port3) to [diode, l=$V_{D1}$] ++(3,0) to ++(0,-0.45) to[short, -o, label={$out$}] ++(1,0)
+    (c.port2) to [diode, invert, l_=$V_{D2}$] ++(3,0) to ++(0,0.45) 
+    ;
+    \node[above left = 0.9cm and 0.1cm of c.port1] (1) {\scriptsize{$1$}};
+    \node[above left = -0.9cm and 0.1cm of c.port4] (4) {\scriptsize{$4$}};
+    \node[above right = 0.9cm and 0.1cm of c.port2] (2) {\scriptsize{$2$}};\node[above right = -0.9cm and 0.1cm of c.port3] (3) {\scriptsize{$3$}};
+    
+
+\end{circuitikz}

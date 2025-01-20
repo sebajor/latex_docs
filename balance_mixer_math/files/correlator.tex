@@ -1,0 +1,175 @@
+Emulating a FX correlator we will take a Fourier transform over the previous expressions.
+
+\begin{equation}
+    \label{eq:d1_signal_fft}
+    \begin{gathered}
+        I_{D1, signal} = -i\pi\biggl(\delta(\omega-\Delta)-\delta(\omega+\Delta)\biggr)
+        \alpha_{2}\textcolor{red}{V_{lo}|S_{21}(\omega_{lo})|}
+        \biggl[ \\ 
+        \textcolor{ForestGreen}{|S_{24}(\nu_{usb})|V_{usb}}
+        e^{i(\textcolor{ForestGreen}{
+        \theta_{24}(\nu_{usb})\textcolor{red}{-\theta_{21}(\omega_{lo})}})} \\
+        -\textcolor{orange}{|S_{24}(\nu_{lsb})|V_{lsb}}
+        e^{i(\textcolor{orange}{-\theta_{24}(\nu_{lsb})}+\textcolor{red}{\theta_{21}(\omega_{lo})})}
+        \biggr]
+    \end{gathered}
+\end{equation}
+
+\begin{equation}
+    \label{eq:d2_signal}
+    \begin{gathered}
+        I_{D2,signal} = -i\pi\biggl(\delta(\omega-\Delta)-\delta(\omega+\Delta)\biggr)
+            \beta_{2} \textcolor{red}{V_{lo}|S_{31}(\omega_{lo})|} \biggl[\\
+            \textcolor{ForestGreen}{|S_{34}(\nu_{usb})|V_{usb}}
+            e^{i(
+            \textcolor{ForestGreen}{\theta_{34}(\nu_{usb})}
+            \textcolor{red}{-\theta_{31}(\omega_{lo})})}\\
+            -\textcolor{orange}{|S_{34}(\nu_{lsb})|V_{lsb}}
+            e^{i(
+            \textcolor{orange}{-\theta_{34}(\nu_{lsb})}
+            \textcolor{red}{+\theta_{31}(\omega_{lo})}}
+        \biggr]
+    \end{gathered}
+\end{equation}
+
+
+\begin{equation}
+    \label{eq:d1_noise_fft}
+    \begin{gathered}
+        I_{D1, noise} = -\pi\biggl( \delta(\omega-\Delta)+\delta(\omega+\Delta) \biggr) 
+        \alpha_{2}\textcolor{red}{V_{lo}|S_{21}(\omega_{lo})|} \biggl[ \\
+        \textcolor{Magenta}{|S_{21}(\nu_{usb})|\eta_{usb}} e^{i(
+        \textcolor{Magenta}{\phi_{usb}+\theta_{21}(\nu_{usb})}
+        \textcolor{red}{-\theta_{21}(\omega_{lo})})}
+        )+ \\
+        \textcolor{blue}{|S_{21}(\nu_{lsb})|\eta_{lsb}}e^{i(
+        \textcolor{blue}{-\phi_{lsb}-\theta_{21}(\nu_{lsb})}
+        \textcolor{red}{+\theta_{21}(\omega_{lo})}
+        )}
+        \biggr]
+    \end{gathered}
+\end{equation}
+
+\begin{equation}
+    \label{eq:d2_noise_fft}
+    \begin{gathered}
+        I_{D2,noise} = \pi\biggl( \delta(\omega-\Delta)+\delta(\omega+\Delta) \biggr) \beta_{2}\textcolor{red}{V_{lo}|S_{31}(\omega_{lo})|} \biggl[\\
+        \textcolor{Magenta}{|S_{31}(\nu_{usb})|\eta_{usb}}
+        e^{i(\textcolor{Magenta}{\phi_{usb}+\theta_{31}(\nu_{usb})}
+        \textcolor{red}{-\theta_{31}(\omega_{lo})})}+\\
+        \textcolor{blue}{|S_{31}(\nu_{lsb})|\eta_{lsb}}
+        e^{i(\textcolor{blue}{-\phi_{lsb}-\theta_{31}(\nu_{lsb})}
+        \textcolor{red}{+\theta_{31}(\omega_{lo})})}
+        \biggr]
+    \end{gathered}      
+\end{equation}
+
+
+And the output of a correlator is obtained by complex conjugating one input and multiplying with the other one. 
+
+\begin{equation}
+    \label{eq:correlator_noise}
+    \begin{gathered}
+    Cross-Correlation_{noise} = -\pi^{2}\alpha_{2}\beta_{2} \textcolor{red}{V_{lo}^2|S_{21}(\omega_{lo})||S_{31}(\omega_{lo})|} \biggl[ \\
+    \textcolor{Magenta}{|S_{21}(\nu_{usb})||S_{31}(\nu_{usb})|\eta_{usb}^{2}}
+    e^{i\bigl( \textcolor{Magenta}{(\theta_{21}(\nu_{usb})-\theta_{31}(\nu_{usb}))}
+    +\textcolor{red}{(\theta_{31}(\omega_{lo})-\theta_{21}(\omega_{lo}))}
+    \bigr)}+\\
+    \textcolor{blue}{|S_{21}(\nu_{lsb})||S_{31}(\nu_{lsb})|\eta_{lsb}^{2}}
+    e^{i\bigl(
+    \textcolor{blue}{(\theta_{31}(\nu_{lsb})-\theta_{21}(\nu_{lsb}))}+
+    \textcolor{red}{(\theta_{21}(\omega_{lo})-\theta_{31}(\omega_{lo}))}
+    \bigr)}+\\
+    \textcolor{Magenta}{|S_{21}(\nu_{usb})|\eta_{usb}}
+    \textcolor{blue}{|S_{31}(\nu_{lsb})|\eta_{lsb}}
+    e^{i\bigl( 
+    (\textcolor{Magenta}{\phi_{usb}}+\textcolor{blue}{\phi_{lsb}})+
+    (\textcolor{Magenta}{\theta_{21}(\nu_{usb})}+\textcolor{blue}{\theta_{31}(\nu_{lsb})})
+    -(\textcolor{red}{\theta_{21}(\omega_{lo})+\theta_{31}(\omega_{lo})})
+    \bigr)}+\\
+    \textcolor{blue}{|S_{21}(\nu_{lsb})|\eta_{lsb}}
+    \textcolor{Magenta}{|S_{31}(\nu_{usb})|\eta_{usb}}
+    e^{i\bigl(
+    -(\textcolor{blue}{\phi_{lsb}}+\textcolor{Magenta}{\phi_{usb}})-
+    (\textcolor{blue}{\theta_{21}(\nu_{lsb})}+\textcolor{Magenta}{\theta_{31}(\nu_{usb})})+
+    (\textcolor{red}{\theta_{21}(\omega_{lo})+\theta_{31}(\omega_{lo})})
+    \bigr)}
+    \biggr]
+    \end{gathered}    
+\end{equation}
+
+\begin{equation}
+    \label{eq:correlator_signal}
+    \begin{gathered}
+    Cross-Correlation_{signal} = \pi^2\alpha_2\beta_2\textcolor{red}{V_{lo}|S_{21}(\omega_{lo})||S_{31}(\omega_{lo})|} \biggl[ \\
+    \textcolor{ForestGreen}{|S_{24}(\nu_{ubs})||S_{34}(\nu_{ubs})|V_{usb}^2}
+    e^{i\bigl(
+    (\textcolor{ForestGreen}{\theta_{24}(\nu_{usb})-\theta_{34}(\nu_{usb})})+
+    (\textcolor{red}{\theta_{31}(\omega_{lo})-\theta_{21}(\omega_{lo})})
+    \bigr)}+ \\
+    \textcolor{orange}{|S_{24}(\nu_{lsb})||S_{34}(\nu_{lsb})|V_{lsb}^2}
+    e^{i\bigl(
+    (\textcolor{orange}{\theta_{34}(\nu_{lsb})-\theta_{24}(\nu_{lsb})})+
+    (\textcolor{red}{\theta_{21}(\omega_{lo})-\theta_{31}(\omega_{lo})})
+    \bigr)}\\
+    -\textcolor{ForestGreen}{|S_{24}(\nu_{ubs})|V_{usb}}
+    \textcolor{orange}{|S_{34}(\nu_{lsb})|V_{lsb}}
+    e^{i\bigl(
+    (\textcolor{ForestGreen}{\theta_{24}(\nu_{usb})}+\textcolor{orange}{\theta_{34}(\nu_{lsb})})-
+    (\textcolor{red}{\theta_{21}(\omega_{lo})+\theta_{31}(\omega_{lo})})
+    \bigr)}-\\
+    \textcolor{orange}{|S_{24}(\nu_{lsb})|V_{lsb}}
+    \textcolor{ForestGreen}{|S_{34}(\nu_{ubs})|V_{usb}}
+    e^{\bigl(
+    -(\textcolor{orange}{\theta_{24}(\nu_{lsb})}+\textcolor{ForestGreen}{\theta_{34}(\nu_{usb})})+
+    (\textcolor{red}{\theta_{21}(\omega_{lo})}+\theta_{31}(\omega_{lo}))
+    \bigr)}
+    \biggr]     
+    \end{gathered}
+\end{equation}
+
+
+Also we calculate the auto correlation  of each input:
+
+\begin{equation}
+    \label{eq:d1_noise_autocorr}
+    \begin{gathered}
+        AutoCorrelation_{D1,noise} = \pi^{2}\alpha_{2}\beta_{2} \textcolor{red}{V_{lo}^2|S_{21}(\omega_{lo})||S_{21}(\omega_{lo})|} \biggl[ \\
+        \textcolor{Magenta}{|S_{21}(\nu_{usb})|^2\eta_{usb}^2}+
+        \textcolor{blue}{|S_{21}(\nu_{lsb})|^2\eta_{lsb}^2} \\
+        -2\textcolor{Magenta}{|S_{21}(\nu_{usb})|\eta_{usb}}
+        \textcolor{blue}{|S_{21}(\nu_{lsb})|\eta_{lsb}}
+        \bigl\{ \\ 
+        e^{i(
+        (\textcolor{Magenta}{\phi_{usb}}+\textcolor{blue}{\phi_{lsb}})+
+        (\textcolor{Magenta}{\theta_{21}(\nu_{usb})}+\textcolor{blue}{\theta_{21}(\nu_{lsb})})-2\textcolor{red}{\theta_{21}(\omega_{lo})})
+        }+\\
+        e^{i(
+        -(\textcolor{Magenta}{\phi_{usb}}+\textcolor{blue}{\phi_{lsb}})
+        -(\textcolor{Magenta}{\theta_{21}(\nu_{usb})}+\textcolor{blue}{\theta_{21}(\nu_{lsb})})+2\textcolor{red}{\theta_{21}(\omega_{lo})})
+        }
+        \bigr\}
+        \biggr]
+    \end{gathered}
+\end{equation}
+
+\begin{equation}
+    \begin{gathered}
+        AutoCorrelation_{D2,noise} = \pi^{2}\alpha_{2}\beta_{2} \textcolor{red}{V_{lo}^2|S_{31}(\omega_{lo})||S_{31}(\omega_{lo})|} \biggl[ \\
+        \textcolor{Magenta}{|S_{31}(\nu_{usb})|^2\eta_{usb}^2}+
+        \textcolor{blue}{|S_{31}(\nu_{lsb})|^2\eta_{lsb}^2} \\
+        -2\textcolor{Magenta}{|S_{31}(\nu_{usb})|\eta_{usb}}
+        \textcolor{blue}{|S_{31}(\nu_{lsb})|\eta_{lsb}}
+        \bigl\{ \\ 
+        e^{i(
+        (\textcolor{Magenta}{\phi_{usb}}+\textcolor{blue}{\phi_{lsb}})+
+        (\textcolor{Magenta}{\theta_{31}(\nu_{usb})}+\textcolor{blue}{\theta_{31}(\nu_{lsb})})-2\textcolor{red}{\theta_{31}(\omega_{lo})})
+        }+\\
+        e^{i(
+        -(\textcolor{Magenta}{\phi_{usb}}+\textcolor{blue}{\phi_{lsb}})
+        -(\textcolor{Magenta}{\theta_{31}(\nu_{usb})}+\textcolor{blue}{\theta_{31}(\nu_{lsb})})+2\textcolor{red}{\theta_{31}(\omega_{lo})})
+        }
+        \bigr\}
+        \biggr]
+    \end{gathered}
+\end{equation}

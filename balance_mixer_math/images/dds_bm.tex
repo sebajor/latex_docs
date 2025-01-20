@@ -1,0 +1,27 @@
+\begin{circuitikz}[scale=0.8, transform shape]
+    \draw (-3,-1.5) node[generic, draw, rotate=-90] (load) {load}
+    ;
+    \draw (4,2.45) node[coupler] (c1) {h2}
+    (c1.port4) to[short, -o] ++(-1,0)
+    (c1.port4) node[above left=0.5] {$V_{lo}$}
+    (c1.port3) to [diode, l=$Va_{D1}$] ++(2.5,0)  to[short, -o, l=$out\,a_1$] ++(1,0)
+    (c1.port2) to [diode, invert, l_=$Va_{D2}$] ++(2.5,0) to[short, -o, l_=$out\,a_2$] ++(1,0)
+    ;
+    ;
+    \draw (4,-2.45) node[coupler] (c2) {h3}
+    (c2.port1) to[short, -o] ++(-1,0)
+    (c2.port1) node[below left=1.5] {$V_{lo}$}
+    (c2.port3) to [diode,invert, l=$Vb_{D1}$] ++(2.5,0)  to[short, -o, l=$out\,b_1$] ++(1,0)
+    (c2.port2) to [diode, l_=$Vb_{D2}$] ++(2.5,0) to[short, -o, l_=$out\,b_2$] ++(1,0)
+    ;
+    
+    \draw (0,0) node[coupler] (c) {h1}
+    %(c.port1) to[short,-o] ++(-1,0)
+    (c.port4) to[short,-o] ++(-1,0)
+    (c.port4) node[above left=0.5cm] {$V_{RF}$}
+    %(c.port1) node[below left=0.5cm] {$V_{RF}$}
+    (c.port1) -- (-3,-.45) to (load.west)
+    (c.port3) to node[above]{$V_{RF}0$} (2.5,0.45) -- (2.5,2) to (c1.port1)
+    (c.port2) to node[below]{$V_{RF}1$}( 2.5,-0.45) --(2.5,-2) --(2.5,-2) to (c2.port4)
+    ;
+\end{circuitikz}

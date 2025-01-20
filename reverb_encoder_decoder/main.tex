@@ -1,0 +1,78 @@
+% Template:     Informe LaTeX
+% Documento:    Archivo principal
+% Versión:      7.3.7 (21/08/2021)
+% Codificación: UTF-8
+%
+% Autor: Pablo Pizarro R.
+%        Facultad de Ciencias Físicas y Matemáticas
+%        Universidad de Chile
+%        pablo@ppizarror.com
+%
+% Manual template: [https://latex.ppizarror.com/informe]
+% Licencia MIT:    [https://opensource.org/licenses/MIT]
+
+% CREACIÓN DEL DOCUMENTO
+\documentclass[letterpaper,oneside]{article}
+
+% INFORMACIÓN DEL DOCUMENTO
+\def\titulodelinforme {Tarea 2}
+\def\subtituloinforme {}
+\def\temaatratar {Implementación de sistema para dereverberación basado en tecnología de DeepLearning}
+\def\autordeldocumento {}
+\def\nombredelcurso {Procesamiento de voz en telecomunicaciones}
+\def\codigodelcurso{EL-7022}
+
+\def\nombreuniversidad {Universidad de Chile}
+\def\nombrefacultad {Facultad de Ciencias Físicas y Matemáticas}
+\def\departamentouniversidad {Departamento de la Universidad}
+\def\imagendepartamento {departamentos/uchile}
+\def\imagendepartamentoparams {height=1.57cm}
+\def\localizacionuniversidad {Santiago de Chile}
+
+% INTEGRANTES, PROFESORES Y FECHAS
+\def\tablaintegrantes {
+\begin{tabular}{ll}
+	Integrantes:
+	& \begin{tabular}[t]{l}
+	    Nicolás Gallegillos \\
+		Sebastian Jorquera 
+	\end{tabular} \\
+	Profesor:
+	& \begin{tabular}[t]{l}
+	    Nestor Becerra
+	\end{tabular} \\
+
+	\multicolumn{2}{l}{\localizacionuniversidad}
+\end{tabular}}{
+}
+
+
+% IMPORTACIÓN DEL TEMPLATE
+\input{template}
+
+% INICIO DE PÁGINAS
+\begin{document}
+	
+% PORTADA
+\templatePortrait
+
+% CONFIGURACIÓN DE PÁGINA Y ENCABEZADOS
+\templatePagecfg
+
+% RESUMEN O ABSTRACT
+%\begin{resumen}
+	%\lipsum[1] % Párrafo ejemplo, se puede borrar
+%\end{resumen}
+
+% TABLA DE CONTENIDOS - ÍNDICE
+\templateIndex
+
+% CONFIGURACIONES FINALES
+\templateFinalcfg
+
+% ======================= INICIO DEL DOCUMENTO =======================
+
+\input{example} % Ejemplo, se puede borrar
+
+% FIN DEL DOCUMENTO
+\end{document}

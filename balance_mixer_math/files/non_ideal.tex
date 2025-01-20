@@ -1,0 +1,122 @@
+\section{Non ideal balanced mixer}
+
+Looking at the expression of the equations \label{eq:d1_signal}, \label{eq:d1_noise}, \label{eq:d2_signal} and \label{eq:d2_noise} we have two signals that falls in the same frequency component coming from the LSB and the USB. 
+In order to study the effect over one frequency component we are going to take $\omega_{lo}+\Delta = \nu_{usb}$ and $\omega_{lo}-\Delta = \nu_{lsb}$ meaning that $\Delta=\omega_{lsb}=\omega_{usb}$. The equations are then:
+
+\begin{equation}
+    \label{eq:d1_signal}
+    \begin{gathered}
+        I_{D1, signal} = \alpha_{2}\textcolor{red}{V_{lo}|S_{21}(\omega_{lo})|}\biggl[ 
+        \textcolor{ForestGreen}{|S_{24}(\nu_{usb})|V_{usb}}\sin(\textcolor{ForestGreen}{\Delta t+\theta_{24}(\nu_{usb})}\textcolor{red}{-\theta_{21}(\omega_{lo})}) \\
+        -\textcolor{orange}{|S_{24}(\nu_{lsb})|V_{lsb}}\sin({\textcolor{orange}{\Delta t-\theta_{24}(\nu_{lsb})}+\textcolor{red}{\theta_{21}(\omega_{lo})}})
+        \biggr]
+    \end{gathered}
+\end{equation}
+
+
+\begin{equation}
+    \label{eq:d2_signal}
+    \begin{gathered}
+        I_{D2,signal} = \beta_{2} \textcolor{red}{V_{lo}|S_{31}(\omega_{lo})|} \biggl[
+            \textcolor{ForestGreen}{|S_{34}(\nu_{usb})|V_{usb}}
+            \sin(
+            \textcolor{ForestGreen}{\Delta t+\theta_{34}(\nu_{usb})}
+            \textcolor{red}{-\theta_{31}(\omega_{lo})})\\
+            -\textcolor{orange}{|S_{34}(\nu_{lsb})|V_{lsb}}
+            \sin(
+            \textcolor{orange}{\Delta t-\theta_{34}(\nu_{lsb})}
+            \textcolor{red}{+\theta_{31}(\omega_{lo})})
+        \biggr]
+    \end{gathered}
+\end{equation}
+
+
+\begin{equation}
+    \label{eq:d1_noise_2}
+    \boxed{
+    \begin{gathered}
+        I_{D1, noise} = -\alpha_{2}\textcolor{red}{V_{lo}|S_{21}(\omega_{lo})|} \biggl[ 
+        \textcolor{Magenta}{|S_{21}(\nu_{usb})|\eta_{usb}}\cos(
+        \textcolor{Magenta}{\Delta t+\phi_{usb}+\theta_{21}(\nu_{usb})}
+        \textcolor{red}{-\theta_{21}(\omega_{lo})}
+        )+ \\
+        \textcolor{blue}{|S_{21}(\nu_{lsb})|\eta_{lsb}}\cos(
+        \textcolor{blue}{\Delta t-\phi_{lsb}-\theta_{21}(\nu_{lsb})}
+        \textcolor{red}{+\theta_{21}(\omega_{lo})}
+        )
+        \biggr]
+    \end{gathered}
+    }
+\end{equation}
+
+\begin{equation}
+    \label{eq:d2_noise}
+    \boxed{
+    \begin{gathered}
+        I_{D2,noise} = \beta_{2}\textcolor{red}{V_{lo}|S_{31}(\omega_{lo})|} \biggl[
+        \textcolor{Magenta}{|S_{31}(\nu_{usb})|\eta_{usb}}
+        \cos(\textcolor{Magenta}{\Delta t+\phi_{usb}+\theta_{31}(\nu_{usb})}
+        \textcolor{red}{-\theta_{31}(\omega_{lo})})+\\
+        \textcolor{blue}{|S_{31}(\nu_{lsb})|\eta_{lsb}}
+        \cos(\textcolor{blue}{\Delta t-\phi_{lsb}-\theta_{31}(\nu_{lsb})}
+        \textcolor{red}{+\theta_{31}(\omega_{lo})})
+        \biggr]
+    \end{gathered}      
+    }
+\end{equation}
+
+\input{files/correlator}
+
+
+
+
+
+\begin{comment}
+%%HERE I MADE A LITLLE EXPANSION ON THE EXPRESSIONS
+
+In this case we cannot remove the variation of the ideal S parameters of the components and we expand the terms to group them using $\cos(a+b) = \cos(a)\sin(b)-\sin(a)\cos(b)$
+
+\begin{equation}
+    \begin{gathered}
+        I_{D1, noise} = \alpha_{2}\textcolor{red}{V_{lo}S_{21}(\omega_{lo})}
+        \sin(\Delta t) \biggl[
+        \textcolor{Magenta}{|S_{21}(\omega_{lo}+\Delta)|\eta_{usb}}
+        \cos(\textcolor{Magenta}{\phi_{usb}+\theta_{21}(\omega_{lo}+\Delta)}-\textcolor{red}{\theta_{21}(\omega_{lo})})+\\
+        \textcolor{blue}{|S_{21}(\omega_{lo}-\Delta)|\eta_{lsb}}
+        \cos(\textcolor{red}{\theta_{21}(\omega_{lo})}\textcolor{blue}{-\phi_{lsb}-\theta_{21}(\omega_{lo}-\Delta)}) 
+        \biggr]\\
+        -\alpha_{2}\textcolor{red}{V_{lo}S_{21}(\omega_{lo})}\cos(\Delta t) \biggl[
+        \textcolor{Magenta}{|S_{21}(\omega_{lo}+\Delta)|\eta_{usb}}
+        \sin(\textcolor{Magenta}{\phi_{usb}+\theta_{21}(\omega_{lo}+\Delta)}-\textcolor{red}{\theta_{21}(\omega_{lo})})+\\
+        \textcolor{blue}{|S_{21}(\omega_{lo}-\Delta)|\eta_{lsb}}
+        \sin(\textcolor{red}{\theta_{21}(\omega_{lo})}\textcolor{blue}{-\phi_{lsb}-\theta_{21}(\omega_{lo}-\Delta)}) 
+        \biggr]
+    \end{gathered}  
+\end{equation}
+
+
+\begin{equation}
+    \begin{gathered}
+        I_{D2,noise} = \beta_{2}\textcolor{red}{|S_{31}(\omega_{lo})|V_{lo}}
+        \cos(\Delta t)\biggl[
+        \textcolor{Magenta}{|S_{31}(\omega_{lo}+\Delta)|\eta_{usb}}
+        \sin(\textcolor{Magenta}{\phi_{usb}+\theta_{31}(\omega_{lo}+\Delta)}
+        \textcolor{red}{-\theta_{31}(\omega_{lo})})+\\
+        \textcolor{blue}{|S_{31}(\omega_{lo}-\Delta)|\eta_{lsb}}
+        \sin(\textcolor{red}{\theta_{31}(\omega_{lo})}
+        \textcolor{blue}{-\phi_{lsb}-\theta_{31}(\omega_{lo}-\Delta)})
+        \biggr]\\
+        -\beta_{2}\textcolor{red}{|S_{31}(\omega_{lo})|V_{lo}}
+        \sin(\Delta t)\biggl[
+        \textcolor{Magenta}{|S_{31}(\omega_{lo}+\Delta)|\eta_{usb}}
+        \cos(\textcolor{Magenta}{\phi_{usb}+\theta_{31}(\omega_{lo}+\Delta)}
+        \textcolor{red}{-\theta_{31}(\omega_{lo})})+\\
+        \textcolor{blue}{|S_{31}(\omega_{lo}-\Delta)|\eta_{lsb}}
+        \cos(\textcolor{red}{\theta_{31}(\omega_{lo})}
+        \textcolor{blue}{-\phi_{lsb}-\theta_{31}(\omega_{lo}-\Delta)})
+        \biggr]
+    \end{gathered}
+\end{equation}
+
+\end{comment}
+
