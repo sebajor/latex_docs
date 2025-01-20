@@ -1,6 +1,6 @@
 \section{Nearfield Holography math background}
 
-Our pipeline is mostly based on the Baars paper \quote{baars}, in this section a short mathematical review will be presented with the key concepts used in our holography pipelines.
+Our pipeline is mostly based on the Baars paper \cite{baars}, in this section a short mathematical review will be presented with the key concepts used in our holography pipelines.
 
 
 The standard expression that links the radiation pattern $f(x,y,z)$ at a given point $P$ with the field distribution in $F(\epsilon, \nu)$ at the aperture plane is given by the equation \ref{eq:holo_general} where you can see the geometry and the parameters used in the equation in the figure \ref{fig:antenna_holo}.
@@ -28,7 +28,7 @@ To simplify the problem some assumptions are commonly used:
     \item The term $\hat{z}\cdot \hat{s}$ represent the deviation from the uniform phase over the aperture. If the deviation is small the term can be considered to be 1.
 \end{enumerate}
 
-With all these assumptions the equation \ref{eq:holo_general} is transformed to the equation \ref{eq:holo_assumptions}, where $r= \sqrt{(x-\xi)^2+(y-\eta)^2+z^2}$.
+With all these assumptions the equation \ref{eq:holo_general} is transformed into equation \ref{eq:holo_assumptions}, where we defined $r= \sqrt{(x-\xi)^2+(y-\eta)^2+z^2}$.
 
 \begin{equation}
 f(x,y,z) = \frac{i}{2\lambda R}\int F(\xi,\eta)[\cos(\theta)+1]e^{ikr}d\eta d\xi
@@ -78,7 +78,7 @@ In this case we need to consider the phase variation in the aperture, ie the exp
 \end{equation}
 
 
- In this case the approximation used is : $r \approx R-(u\xi+v\eta)+\delta p_1(\xi,\eta)+\epsilon$, where $\delta_{p1}$ contains terms that does not depends on the integration variables as shown in equations \ref{eq:holo_p1} and \ref{eq:holo_p2}.
+ In this case the approximation used is : $r \approx R-(u\xi+v\eta)+\delta p_1(\xi,\eta)+\epsilon$, where $\delta p_1$ contains terms that does not depends on the integration variables as shown in equations \ref{eq:holo_p1} and \ref{eq:holo_p2}.
 
 \begin{equation}
     \delta p_1(\xi,\eta) = \frac{\xi^2+\eta^2}{2R}+\frac{(\xi^2+\eta^2)^2}{8R^3} \\
@@ -91,7 +91,7 @@ In this case we need to consider the phase variation in the aperture, ie the exp
 
 
 
-To account the defocus of the telescope another term is added to $\delta_{p1}$, shown in the equation \ref{eq:holo_p2} where $f$ is the focal distance of the antenna and $\delta f$  is the variation of such distance.
+To account the defocus of the telescope another term is added to $\delta p_1$, shown in the equation \ref{eq:holo_p2} where $f$ is the focal distance of the antenna and $\delta f$  is the variation of such distance.
 
 \begin{equation}
     \delta p_2(\xi, \eta) = (\xi^2+\eta^2+(f-\frac{\xi^2+\eta^2}{4f}+\delta f)^2)^{1/2} - (f+\frac{\xi^2+\eta^2}{4f}+\delta f)
@@ -109,7 +109,7 @@ With all these approximation the relation between the beam pattern and the apert
 \end{equation}
 
 
-The term $\epsilon$ can be expanded in a Taylor serie as shown in the equation \ref{eq:holo_taylor}. Depending on the accuracy that you need to met, when solving the equation \ref{eq:holo_nearfield} you can neglect some high order terms.
+The term $\epsilon$ can be expanded in a Taylor serie as shown in the equation \ref{eq:holo_taylor}. Depending on the accuracy that you need to met, when solving the equation \ref{eq:holo_nearfield} you can neglect some high order terms. Its good to note that the first term of the resulting equation recovers the Fourier transform relation, while the rest of the terms are modifications of the field that dissapears when $r$ is large enough.
 
 \begin{equation}
     e^{-ik\epsilon} \approx 1-ik\epsilon = 1-ik\left[ u \frac{\xi(\xi^2+\eta^2)}{2R^2} + v \frac{\eta(\xi^2
@@ -128,7 +128,7 @@ One advantage of the zernike polynomials is that they can be normalized, so the 
 
 
 
-The Zernike polynomils in the unit circle can be represented by the equations \ref{eq:zernike_eq} and \ref{eq:zernike_radial}. In the figure \ref{} the first Zernike terms are shown.
+The Zernike polynomils in the unit circle can be represented by the equations \ref{eq:zernike_eq} and \ref{eq:zernike_radial}. In the figure \ref{fig:zernike_pols} the first Zernike terms are shown.
 
 
 \begin{equation}
@@ -148,7 +148,7 @@ The Zernike polynomils in the unit circle can be represented by the equations \r
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\textwidth]{images/zernike_pols.png}
+    \includegraphics[width=0.9\textwidth]{images/zernike_pols.png}
     \caption{First Zernike polynomials.}
     \label{fig:zernike_pols}
 \end{figure}
