@@ -75,6 +75,23 @@ The figure \ref{fig:nearfield_correction} shows an example of the before and aft
 
 
 
+\subsection{Aperture plane reference}
+
+The position of the aperture plane would also induce RMS noise in the computed surface error. This is given by the geometrical transformation given in \ref{eq:aperture2surface} where implicitly there is a translation from a plane to a parabola, and the way that the plane fold will depend on the height of the plane itself with respect to the parabola. In the practical standpoint, the reference of the aperture position is given by the position where the zero phase is set. 
+The figure \ref{fig:phase_zero_ex} shows the effect of set the phase reference at different positions. 
+It is worth to mention that the large scale removal in the next section is able to take out this artifact, but at the cost of having to use a high order degree polynomial, that could be masking an underlying problem.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\textwidth]{images/phase_zero_example.png}
+    \caption{Effect on the surface error maps of the phase zero setting on aperture plane.}
+    \label{fig:phase_zero_ex}
+\end{figure}
+
+
+
+
 
 
 
