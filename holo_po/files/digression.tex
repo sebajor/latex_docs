@@ -1,0 +1,12 @@
+\section{Machine learning digression}
+
+Being practical, what we really want is to found a map between $\text{beam map } \rightarrow \text{panel deformation}$, 
+The antenna simulation gave us the map: $\text{panel deformation} \rightarrow \text{beam pattern}$, but there is no clear way to go the other way, therefore we used the optimizer to fit the map, tunning the paramerters by trial and error until we got the most similar beam pattern.
+
+
+Another approach is use these machine learning-like algorithms to obtain the mapping from beam map to panel deformations right away. Since we have the antenna simulation path, we have the option to generate a dataset with any size to train a model to output the deformations that produced a given beam map. The biggest advantage of taking this approach is that all the math complexity will be hide and if we are lucky the dimensionality of space of parameters can be lower.
+
+
+I dont know if that is better suited for the annelear, where we give samples of an input field and the output field, and optimize some sort of model to do the mapping between them. 
+
+
