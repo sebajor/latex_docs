@@ -1,0 +1,80 @@
+\documentclass[10pt]{article}
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\usepackage{amsmath, amssymb, amscd, amsthm, amsfonts}
+\usepackage{tikz}
+\usetikzlibrary{math}
+\usetikzlibrary{positioning}
+\usepackage{comment}
+\usepackage{circuitikz}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage[makeroom]{cancel}
+\oddsidemargin 0pt
+\evensidemargin 0pt
+%\marginparwidth 40pt
+\marginparsep 10pt
+\topmargin -20pt
+\headsep -40pt
+%\bmargin 10pt
+\textheight 8.7in
+\textwidth 6.65in
+\linespread{1.2}
+
+\title{Development of a Polarimetric Imaging Capability for the APEX-MKID Camera}
+%\author{Sebastian Jorquera}
+\date{}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\newcommand{\rr}{\mathbb{R}}
+
+\newcommand{\al}{\alpha}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\aff}{aff}
+
+\begin{document}
+
+\maketitle
+
+%The APEX Microwave Kinetic Inductance Detector (AMKID) camera is a dual color bolometer instrument installed at the APEX telescope at 5100 meters above sea level. 
+%The receiver works at two different frequencys: the low frequency array (LFA) working at 350GHz band was commisioned at 2025 and is currently open for scientific projects, the high frequency array (HFA) centered at 850GHz is still under commisioning now and is expected to be open for the community at 2027. 
+%The camera has a large field of view ($15.3' \times 15.3'$) and a huge amount of detectors: $13,952$ pixels for the HFA and $3,520$ pixels for the LFA. The commisioning results shows a detectors sensitiviy of $2.2 mK\sqrt{s}$ and a diffraction-limited beam sizes for the LFA \cite{reyes2026amkid}.
+
+
+%An important tool for the study of the dust grains that conforms molecular clouds consists in measuring the linear polarization of the dust. This polarization measurements can be traced back to the geomertrical properties of the grains and can also be used as a tracer of the magnetical field itself of the molecular cloud.
+%The polarization state is an important drive for the studies of the dust grains that conforms the molecular clouds and can be also used as a tracer of the magnetic field itself in the molecular cloud. 
+
+
+%Since the AMKID camera is a bolometer, by definition it just measures total power of the source, therefore is blind to the polarization state of the source. The standard technique to obtain a linear polarization measurement from a bolometer receiver, consists on modulate the signal polarization with an external device placed previous the detectors. Usually this external device is a waveplate, an optical device that rotates the linear polarization plane of the incoming light by a given angle, and the modulation signal is produced via rotation of such waveplate at a mechanical frequency $\omega$ \cite{giorgio_phd}.
+
+%%The usual selection consists of a half-wave plate that produced a modulated sensed signal of the form $V_{H} = \frac{1}{2}(I+U\cos(4\omega t)+V\sin(4\omega t))$.
+%The present project proposal consists of adding a polarimetric functionality to the AMKID camera, allowing to recover the linear polarization state from the astronmical observation, enhancing the observation modes of this new camera.
+
+%5CHAT GPT
+The APEX Microwave Kinetic Inductance Detector (AMKID) camera is a dual-band bolometric receiver installed on the APEX telescope, located at 5100 masl in the Atacama Desert, Chile. The instrument operates in two observing bands centered at 350 GHz and 850 GHz. The Low Frequency Array (LFA) was commissioned in 2025 and is currently available for scientific observations, while the High Frequency Array (HFA) is still undergoing commissioning and is expected to be available to the astronomical community in 2027. AMKID combines a large field of view $(15.3' \times 15.3')$ with large-format detector arrays comprising $3,520$ pixels in the LFA and $13,952$ pixels in the HFA, providing unprecedented mapping capabilities at submillimeter wavelengths.\cite{reyes2026amkid}
+
+Polarimetric observations at submillimeter wavelengths provide a unique probe of magnetic fields effects in molecular clouds. Thermal emission from aligned dust grains is linearly polarized, allowing the orientation of the magnetic field and the properties of the dust to be inferred from polarization measurements. These observations are essential for understanding the role of magnetic fields in star formation regions and the structure of the interstellar medium.
+
+As a bolometric instrument, AMKID measures only the total incident power and is therefore insensitive to the polarization state of the incoming radiation. Polarimetric capability can be achieved by incorporating an external polarization modulator, typically a rotating half-wave plate, placed previous the detectors to encode the polarization signal into the detector sensed data \cite{giorgio_phd}.
+
+The proposed project aims to develop and implement a polarimetric imaging capability for the AMKID camera by integrating a polarization modulation system and the corresponding data analysis pipeline. This upgrade will enable measurements of the linear polarization of astronomical sources, significantly expanding the scientific capabilities of AMKID and providing the astronomical community with a powerful new instrument for studying magnetic fields and dust geometrical properties at 350 and 850 GHz.
+
+
+
+
+
+%\begin{abstract}
+
+%\end{abstract}
+
+%\input{files/horrible_math}
+%\input{files/ideal}
+%\input{files/non_ideal}
+%\input{files/pfb}
+\bibliographystyle{ieeetr}
+\bibliography{references}
+
+\end{document}
